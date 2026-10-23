@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Griha Pravesam - Family & Guest Itinerary</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: {
+                        amber: { 50: '#fffbeb', 100: '#fef3c7', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .tab-btn.active {
+            border-bottom: 2.5px solid #d97706;
+            color: #d97706 !important;
+            font-weight: 800;
+        }
+
+        .touch-scroll {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+    </style>
+</head>
+
+<body class="bg-amber-50/40 text-slate-800 font-sans min-h-screen overflow-x-hidden">
+
+    <!-- Welcoming Hero Header -->
+    <header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md">
+        <div
+            class="w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
+            <div>
+                <h1 class="text-base sm:text-xl font-extrabold tracking-tight">Griha Pravesam Celebrations</h1>
+                <p class="text-amber-100 text-xs mt-0.5">Nov 19 – Nov 21, 2025 • Family & Guest Portal</p>
+            </div>
+            <div class="flex items-center justify-center sm:justify-end gap-2">
+                <span
+                    class="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 bg-amber-800/60 rounded-full text-amber-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Live Itinerary
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-7xl mx-auto px-2 sm:px-6 py-3 space-y-3">
+
+        <!-- Progress Metrics (Zero Overlapping Icons) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+            <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
+                <div
+                    class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                    <span>Ritual Readiness</span>
+                    <i class="fa-solid fa-om text-amber-600 text-xs"></i>
+                </div>
+                <h3 class="text-lg sm:text-2xl font-black text-amber-600 mt-0.5 leading-tight" id="kpiReadiness">0%</h3>
+                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiReadinessSub">0 of 0
+                    Completed</p>
+            </div>
+
+            <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
+                <div
+                    class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                    <span>Stay & Taxis</span>
+                    <i class="fa-solid fa-hotel text-blue-600 text-xs"></i>
+                </div>
+                <h3 class="text-lg sm:text-2xl font-black text-blue-600 mt-0.5 leading-tight" id="kpiLogistics">0</h3>
+                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiLogisticsSub">Rooms &
+                    Vehicles</p>
+            </div>
+
+            <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
+                <div
+                    class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                    <span>Pooja Items</span>
+                    <i class="fa-solid fa-basket-shopping text-indigo-600 text-xs"></i>
+                </div>
+                <h3 class="text-lg sm:text-2xl font-black text-indigo-600 mt-0.5 leading-tight" id="kpiShopping">0</h3>
+                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiShoppingSub">0 Pending</p>
+            </div>
+
+            <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
+                <div
+                    class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                    <span>To-Do Tasks</span>
+                    <i class="fa-solid fa-clipboard-check text-rose-600 text-xs"></i>
+                </div>
+                <h3 class="text-lg sm:text-2xl font-black text-rose-600 mt-0.5 leading-tight" id="kpiTodo">0</h3>
+                <p class="text-[10px] text-rose-500 font-semibold truncate mt-0.5" id="kpiTodoSub">Action Required</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs & Common Filter Toolbar -->
+        <div class="glass-card p-2.5 sm:p-3 rounded-xl border space-y-2.5 shadow-sm">
+            <div class="flex space-x-1 sm:space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200">
+                <button onclick="switchTab('dayview')" id="tab-dayview"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg whitespace-nowrap bg-amber-100/70 text-amber-800">
+                    Day-by-Day Master
+                </button>
+                <button onclick="switchTab('schedule')" id="tab-schedule"
+                    class="tab-btn active px-2.5 py-1.5 text-xs font-bold rounded-lg whitespace-nowrap">
+                    Ritual & Event Agenda
+                </button>
+                <button onclick="switchTab('food')" id="tab-food"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    Food & Catering
+                </button>
+                <button onclick="switchTab('logistics')" id="tab-logistics"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    Rooms & Vehicles
+                </button>
+                <button onclick="switchTab('shopping')" id="tab-shopping"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    Pooja List
+                </button>
+                <button onclick="switchTab('todo')" id="tab-todo"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    To-Do
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
+                <input type="text" id="searchInput" oninput="renderCurrentTab()"
+                    placeholder="Search ritual, driver, food, room..."
+                    class="w-full pl-7 pr-2 py-1 text-xs bg-slate-100 rounded-lg border border-slate-200 outline-none">
+            </div>
+
+            <!-- Common Day Filter Bar -->
+            <div class="flex items-center gap-1 pt-1.5 border-t border-slate-200 overflow-x-auto">
+                <span class="text-[11px] font-bold text-slate-500 shrink-0 mr-1">Day:</span>
+                <button onclick="filterByDay('all')" id="btnDay-all"
+                    class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shrink-0 shadow-sm">All
+                    Days</button>
+                <button onclick="filterByDay('Nov 19')" id="btnDay-Nov19"
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    19</button>
+                <button onclick="filterByDay('Nov 20')" id="btnDay-Nov20"
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    20</button>
+                <button onclick="filterByDay('Nov 21')" id="btnDay-Nov21"
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    21</button>
+            </div>
+        </div>
+
+        <!-- 0. DAY-BY-DAY MASTER OVERVIEW SECTION -->
+        <section id="sec-dayview" class="hidden space-y-3">
+            <div
+                class="glass-card p-2.5 sm:p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm bg-gradient-to-r from-amber-500/10 to-transparent">
+                <div>
+                    <h2 class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calendar-check text-amber-600"></i>
+                        <span>Daily Master View: <span id="dayviewCurrentLabel" class="text-amber-600 underline">Nov
+                                20</span></span>
+                    </h2>
+                    <p class="text-[10px] text-slate-500">Live ceremonies, Appans Hotel feast, to-dos & transit</p>
+                </div>
+                <div class="flex items-center gap-1 overflow-x-auto pb-0.5">
+                    <button onclick="filterByDay('Nov 19')"
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        19</button>
+                    <button onclick="filterByDay('Nov 20')"
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        20</button>
+                    <button onclick="filterByDay('Nov 21')"
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        21</button>
+                    <button onclick="filterByDay('all')"
+                        class="px-2 py-0.5 text-[10px] font-bold rounded bg-amber-600 text-white shadow-sm shrink-0">All
+                        Days</button>
+                </div>
+            </div>
+
+            <!-- 4 Grid Panels -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                    <div class="p-2.5 bg-amber-50 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-amber-900">Rituals & Events</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200 text-amber-900"
+                            id="dayviewScheduleCount">0 Events</span>
+                    </div>
+                    <div id="dayviewScheduleContainer"
+                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                </div>
+
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                    <div class="p-2.5 bg-amber-50 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-amber-900">Food (Appans Hotel)</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200 text-amber-900"
+                            id="dayviewFoodCount">0 Meals</span>
+                    </div>
+                    <div id="dayviewFoodContainer"
+                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                </div>
+
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                    <div class="p-2.5 bg-rose-50 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-rose-900">To-Do Tasks</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-200 text-rose-900"
+                            id="dayviewTodoCount">0 Tasks</span>
+                    </div>
+                    <div id="dayviewTodoContainer"
+                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                </div>
+
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                    <div class="p-2.5 bg-blue-50 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-blue-900">Rooms & Transit</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-200 text-blue-900"
+                            id="dayviewLogisticsCount">Active</span>
+                    </div>
+                    <div id="dayviewLogisticsContainer"
+                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. Ritual & Event Agenda Section (Read-Only) -->
+        <section id="sec-schedule" class="space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 border-b">
+                    <h2 class="text-xs font-bold">Ritual & Event Agenda</h2>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[500px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Date & Time</th>
+                                <th class="p-2.5">Ritual / Activity</th>
+                                <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Transport</th>
+                                <th class="p-2.5">In-Charge</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Food & Catering Section (Read-Only) -->
+        <section id="sec-food" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 border-b flex justify-between items-center">
+                    <h2 class="text-xs font-bold">Food & Catering (Appans Hotel)</h2>
+                    <span class="text-[10px] font-bold text-amber-600">Sivakasi</span>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[540px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Meal & Timing</th>
+                                <th class="p-2.5">Caterer</th>
+                                <th class="p-2.5">Menu</th>
+                                <th class="p-2.5">Headcount</th>
+                                <th class="p-2.5">Contact</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="foodTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Rooms & Vehicles Section (Read-Only, Tap-To-Call) -->
+        <section id="sec-logistics" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 border-b flex justify-between items-center">
+                    <h2 class="text-xs font-bold">Rooms & Transit Bookings</h2>
+                    <span class="text-[10px] text-slate-500">Tap phone to call</span>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[500px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Type</th>
+                                <th class="p-2.5">Name</th>
+                                <th class="p-2.5">Details & Phone</th>
+                                <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Booked By</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logisticsTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Pooja List Section (Read-Only) -->
+        <section id="sec-shopping" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 border-b">
+                    <h2 class="text-xs font-bold">Pooja Items & Shopping</h2>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[480px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Category</th>
+                                <th class="p-2.5">Item</th>
+                                <th class="p-2.5">Notes</th>
+                                <th class="p-2.5">In-Charge</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shoppingTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. To-Do Section (Read-Only) -->
+        <section id="sec-todo" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 border-b">
+                    <h2 class="text-xs font-bold">To-Do Tasks</h2>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[460px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Task Description</th>
+                                <th class="p-2.5">Deadline</th>
+                                <th class="p-2.5">Person</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todoTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Self-Contained Guest Showcase Script (Direct Live Fetch from Google Sheet) -->
+    <script>
+        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbywSddStVn2OJUglt7X9uAAtHgnrXu2Z-KjBrL1vIAqj6UtzuzWYSHFKeC707JvhMk/exec";
+
+        let scheduleData = [];
+        let logisticsData = [];
+        let shoppingData = [];
+        let todoData = [];
+        let foodData = [];
+        let activeTab = 'schedule';
+        let currentDayFilter = 'all';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLiveGuestData();
+            setInterval(fetchLiveGuestData, 30000); // 30s auto-refresh
+        });
+
+        async function fetchLiveGuestData() {
+            try {
+                const res = await fetch(`${GOOGLE_SHEET_URL}?_t=${Date.now()}`);
+                const data = await res.json();
+
+                if (Array.isArray(data) && data.length > 1) {
+                    let s = [], l = [], sh = [], td = [], fd = [];
+                    const seen = new Set();
+
+                    for (let i = 1; i < data.length; i++) {
+                        const r = data[i];
+                        if (!r || !r[0]) continue;
+                        const id = String(r[0]).trim();
+                        if (seen.has(id)) continue;
+                        seen.add(id);
+
+                        const sec = String(r[1] || 'schedule').toLowerCase().trim();
+
+                        if (sec === 'food') {
+                            fd.push({
+                                id, date: cleanDate(r[2]) || 'Nov 20', time: cleanTime(r[3]), mealType: r[3] || 'Meal',
+                                caterer: r[4] || 'Appans Hotel', place: r[5] || 'Sivakasi', bookedBy: r[6],
+                                contactPerson: r[7], status: r[8] || 'Confirmed', menu: r[9], headcount: r[10] || '40 Max'
+                            });
+                        } else {
+                            const item = {
+                                id, section: sec, date: cleanDate(r[2]) || r[2], category: r[2],
+                                time: cleanTime(r[3]) || r[3], details: r[3], notes: r[3],
+                                title: r[4], name: r[4], location: r[5], transport: r[6],
+                                person: r[7], status: r[8] || 'Confirmed'
+                            };
+                            if (sec === 'schedule') s.push(item);
+                            else if (sec === 'logistics') l.push(item);
+                            else if (sec === 'shopping') sh.push(item);
+                            else if (sec === 'todo') td.push(item);
+                        }
+                    }
+
+                    scheduleData = s; logisticsData = l; shoppingData = sh; todoData = td; foodData = fd;
+                    renderAll();
+                }
+            } catch (err) {
+                console.error("Live fetch failed", err);
+            }
+        }
+
+        function cleanDate(val) {
+            if (!val) return '';
+            const str = String(val).trim();
+            if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+                try {
+                    const d = new Date(str);
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    return `${months[d.getMonth()]} ${d.getDate()}`;
+                } catch (e) { return str; }
+            }
+            if (str.includes('20-Nov') || str.includes('Nov 20')) return 'Nov 20';
+            if (str.includes('19-Nov') || str.includes('Nov 19')) return 'Nov 19';
+            if (str.includes('21-Nov') || str.includes('Nov 21')) return 'Nov 21';
+            return str;
+        }
+
+        function cleanTime(val) {
+            if (!val) return '';
+            const str = String(val).trim();
+            if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+                try {
+                    const d = new Date(str);
+                    let hours = d.getHours();
+                    const minutes = d.getMinutes();
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12;
+                    const minStr = minutes < 10 ? '0' + minutes : minutes;
+                    const hrStr = hours < 10 ? '0' + hours : hours;
+                    return `${hrStr}:${minStr} ${ampm}`;
+                } catch (e) { return str; }
+            }
+            return str;
+        }
+
+        function highlightPhoneNumbers(text) {
+            if (!text) return '—';
+            return text.replace(/(\+?\d[\d\s-]{8,14}\d)/g, '<a href="tel:$1" class="text-amber-600 font-bold underline inline-flex items-center gap-1"><i class="fa-solid fa-phone text-[9px]"></i>$1</a>');
+        }
+
+        function getReadOnlyStatus(status) {
+            const map = {
+                'Completed': 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                'Confirmed': 'bg-blue-100 text-blue-800 border-blue-300',
+                'In Progress': 'bg-amber-100 text-amber-800 border-amber-300',
+                'Scheduled': 'bg-purple-100 text-purple-800 border-purple-300',
+                'Pending': 'bg-rose-100 text-rose-800 border-rose-300'
+            };
+            const style = map[status] || 'bg-slate-100 text-slate-700 border-slate-300';
+            return `<span class="px-2 py-0.5 text-[10px] font-bold rounded-full border ${style}">${status}</span>`;
+        }
+
+        function updateKPIs() {
+            const totalSched = scheduleData.length;
+            const doneSched = scheduleData.filter(i => i.status === 'Completed' || i.status === 'Confirmed').length;
+            const pct = totalSched > 0 ? Math.round((doneSched / totalSched) * 100) : 0;
+            document.getElementById('kpiReadiness').innerText = pct + '%';
+            document.getElementById('kpiReadinessSub').innerText = `${doneSched} of ${totalSched} Ready/Done`;
+
+            document.getElementById('kpiLogistics').innerText = logisticsData.length;
+            document.getElementById('kpiLogisticsSub').innerText = 'Rooms & Vehicles';
+
+            const pendingShop = shoppingData.filter(i => i.status !== 'Completed').length;
+            document.getElementById('kpiShopping').innerText = shoppingData.length;
+            document.getElementById('kpiShoppingSub').innerText = `${pendingShop} Pending`;
+
+            const pendingTodo = todoData.filter(i => i.status === 'Pending' || i.status === 'In Progress').length;
+            document.getElementById('kpiTodo').innerText = pendingTodo;
+            document.getElementById('kpiTodoSub').innerText = `${todoData.length} Total Tasks`;
+        }
+
+        function renderAll() {
+            renderScheduleTable();
+            renderFoodTable();
+            renderLogisticsTable();
+            renderShoppingTable();
+            renderTodoTable();
+            renderDayOverview();
+            updateKPIs();
+        }
+
+        function renderCurrentTab() {
+            if (activeTab === 'dayview') renderDayOverview();
+            else if (activeTab === 'schedule') renderScheduleTable();
+            else if (activeTab === 'food') renderFoodTable();
+            else if (activeTab === 'logistics') renderLogisticsTable();
+            else if (activeTab === 'shopping') renderShoppingTable();
+            else if (activeTab === 'todo') renderTodoTable();
+        }
+
+        function filterByDay(day) {
+            currentDayFilter = day;
+            ['all', 'Nov 19', 'Nov 20', 'Nov 21'].forEach(d => {
+                const btn = document.getElementById('btnDay-' + d.replace(/\s+/g, ''));
+                if (!btn) return;
+                if (d === day) {
+                    btn.className = 'px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shrink-0 shadow-sm';
+                } else {
+                    btn.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0';
+                }
+            });
+            const lbl = document.getElementById('dayviewCurrentLabel');
+            if (lbl) lbl.innerText = day === 'all' ? 'All Days' : day;
+            renderAll();
+        }
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            ['dayview', 'schedule', 'food', 'logistics', 'shopping', 'todo'].forEach(t => {
+                const sec = document.getElementById('sec-' + t);
+                const tab = document.getElementById('tab-' + t);
+                if (sec) sec.classList.add('hidden');
+                if (tab) {
+                    tab.classList.remove('active', 'text-amber-600');
+                    tab.classList.add('text-slate-600');
+                }
+            });
+            const activeSec = document.getElementById('sec-' + tabId);
+            const activeTabEl = document.getElementById('tab-' + tabId);
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeTabEl) {
+                activeTabEl.classList.add('active', 'text-amber-600');
+                activeTabEl.classList.remove('text-slate-600');
+            }
+            renderCurrentTab();
+        }
+
+        function renderScheduleTable() {
+            const tbody = document.getElementById('scheduleTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = scheduleData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No events found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 whitespace-nowrap"><span class="font-bold text-amber-600">${r.date}</span><span class="text-[10px] text-slate-400 block">${r.time}</span></td>
+                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
+                        <td class="p-2.5 text-slate-600"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
+                        <td class="p-2.5 text-slate-600">${r.transport}</td>
+                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderFoodTable() {
+            const tbody = document.getElementById('foodTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = foodData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No catering meals found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 whitespace-nowrap"><span class="font-extrabold text-amber-600">${r.mealType}</span><span class="text-[10px] text-slate-400 block">${r.time} • ${r.date}</span></td>
+                        <td class="p-2.5 font-bold">${r.caterer}<span class="text-[10px] text-slate-400 block">${r.place}</span></td>
+                        <td class="p-2.5"><div class="text-[11px] bg-amber-50 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div></td>
+                        <td class="p-2.5 text-slate-700 font-semibold">${r.headcount}</td>
+                        <td class="p-2.5 text-slate-600">${r.contactPerson || r.bookedBy || '—'}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderLogisticsTable() {
+            const tbody = document.getElementById('logisticsTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = logisticsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No bookings found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-100 text-blue-700">${r.category}</span></td>
+                        <td class="p-2.5 font-bold text-slate-800">${r.name}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600">${highlightPhoneNumbers(r.details)}</td>
+                        <td class="p-2.5 text-slate-600">${r.location}</td>
+                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderShoppingTable() {
+            const tbody = document.getElementById('shoppingTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = shoppingData.filter(i => !search || i.title.toLowerCase().includes(search));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No pooja items found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-indigo-100 text-indigo-700">${r.category}</span></td>
+                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600">${r.notes || '—'}</td>
+                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderTodoTable() {
+            const tbody = document.getElementById('todoTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = todoData.filter(i => (currentDayFilter === 'all' || (i.date && i.date.includes(currentDayFilter)) || (i.time && i.time.includes(currentDayFilter))) && (!search || i.title.toLowerCase().includes(search)));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="4" class="p-4 text-center text-slate-400">No to-do tasks found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
+                        <td class="p-2.5 text-[10px] text-slate-500 font-bold">${r.time || r.date}</td>
+                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderDayOverview() {
+            const day = currentDayFilter;
+            const filterFn = i => day === 'all' || (i.date && i.date.includes(day)) || (i.time && i.time.includes(day));
+
+            const dayS = scheduleData.filter(filterFn);
+            document.getElementById('dayviewScheduleCount').innerText = `${dayS.length} Events`;
+            document.getElementById('dayviewScheduleContainer').innerHTML = dayS.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rituals scheduled for this day.</p>` :
+                dayS.map(r => `
+                    <div class="py-1.5 flex items-start justify-between gap-1">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 block">${r.title}</span>
+                            <span class="text-[10px] text-amber-600 font-semibold">${r.time} • ${r.location}</span>
+                        </div>
+                        <div>${getReadOnlyStatus(r.status)}</div>
+                    </div>
+                `).join('');
+
+            const dayF = foodData.filter(i => day === 'all' || (i.date && i.date.includes(day)));
+            document.getElementById('dayviewFoodCount').innerText = `${dayF.length} Meals`;
+            document.getElementById('dayviewFoodContainer').innerHTML = dayF.length === 0 ? `<p class="text-xs text-slate-400 py-2">No catering meals logged for this day.</p>` :
+                dayF.map(r => {
+                    const mealDisplay = r.mealType && r.time && r.mealType !== r.time ? `${r.mealType} (${r.time})` : (r.mealType || r.time);
+                    return `
+                    <div class="py-1.5 flex items-start justify-between gap-1">
+                        <div>
+                            <span class="text-xs font-bold text-amber-600 block">${mealDisplay}</span>
+                            <span class="text-[10px] text-slate-700 font-medium block">${r.menu || 'Menu TBD'}</span>
+                            <span class="text-[9px] text-slate-400">${r.caterer} • ${r.headcount}</span>
+                        </div>
+                        <div>${getReadOnlyStatus(r.status)}</div>
+                    </div>
+                `}).join('');
+
+            const dayT = todoData.filter(filterFn);
+            document.getElementById('dayviewTodoCount').innerText = `${dayT.length} Tasks`;
+            document.getElementById('dayviewTodoContainer').innerHTML = dayT.length === 0 ? `<p class="text-xs text-slate-400 py-2">No to-dos for this day.</p>` :
+                dayT.map(r => `
+                    <div class="py-1.5 flex items-start justify-between gap-1">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-800 block">${r.title}</span>
+                            <span class="text-[10px] text-slate-500">${r.time || r.date} • ${r.person}</span>
+                        </div>
+                        <div>${getReadOnlyStatus(r.status)}</div>
+                    </div>
+                `).join('');
+
+            document.getElementById('dayviewLogisticsContainer').innerHTML = logisticsData.map(r => `
+                <div class="py-1 flex items-center justify-between text-xs">
+                    <div>
+                        <span class="font-bold text-slate-800 block">${r.name}</span>
+                        <span class="text-[10px] text-slate-500">${highlightPhoneNumbers(r.details)}</span>
+                    </div>
+                    <div>${getReadOnlyStatus(r.status)}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+
+</html>
