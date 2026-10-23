@@ -34,6 +34,11 @@
             border: 1px solid rgba(226, 232, 240, 0.9);
         }
 
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(51, 65, 85, 0.85);
+        }
+
         .tab-btn.active {
             border-bottom: 2.5px solid #d97706;
             color: #d97706 !important;
@@ -44,40 +49,62 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
         }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.5);
+            border-radius: 9999px;
+        }
     </style>
 </head>
 
-<body class="bg-amber-50/40 text-slate-800 font-sans min-h-screen overflow-x-hidden">
+<body
+    class="bg-amber-50/40 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen transition-colors duration-200 overflow-x-hidden">
 
     <!-- Welcoming Hero Header -->
-    <header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md">
-        <div
-            class="w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
-            <div>
-                <h1 class="text-base sm:text-xl font-extrabold tracking-tight">Griha Pravesam Celebrations</h1>
-                <p class="text-amber-100 text-xs mt-0.5">Nov 19 – Nov 21, 2025 • Family & Guest Portal</p>
+    <header
+        class="sticky top-0 z-40 bg-gradient-to-r from-amber-600 to-amber-700 dark:bg-slate-800 text-white shadow-md">
+        <div class="w-full max-w-7xl mx-auto px-2.5 sm:px-6 py-2.5 flex items-center justify-between gap-1.5">
+            <div class="flex items-center space-x-1.5 min-w-0">
+                <i class="fa-solid fa-house-chimney text-amber-200 text-base sm:text-lg shrink-0"></i>
+                <div class="min-w-0">
+                    <h1 class="text-xs sm:text-base font-bold tracking-tight truncate leading-tight">Griha Pravesam
+                        Celebrations</h1>
+                    <div class="flex items-center gap-1.5 text-[9px] sm:text-xs text-amber-100">
+                        <span class="whitespace-nowrap">Nov 19–21, 2025</span>
+                        <span
+                            class="inline-flex items-center gap-1 font-semibold px-1.5 py-0.2 rounded-full bg-amber-800/80 text-[9px] text-amber-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Guest Portal
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center justify-center sm:justify-end gap-2">
-                <span
-                    class="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 bg-amber-800/60 rounded-full text-amber-200">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Live Itinerary
-                </span>
-            </div>
+
+            <!-- Header Quick Action: Theme Toggle -->
+            <button onclick="toggleDarkMode()"
+                class="p-1.5 text-xs rounded-lg bg-amber-800/60 hover:bg-amber-800 transition" title="Toggle Theme">
+                <i id="themeIcon" class="fa-solid fa-moon text-[11px]"></i>
+            </button>
         </div>
     </header>
 
     <main class="w-full max-w-7xl mx-auto px-2 sm:px-6 py-3 space-y-3">
 
-        <!-- Progress Metrics (Zero Overlapping Icons) -->
+        <!-- Progress Metrics Cards -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
                 <div
                     class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                    <span>Ritual Readiness</span>
-                    <i class="fa-solid fa-om text-amber-600 text-xs"></i>
+                    <span>Events Ready</span>
+                    <i class="fa-solid fa-calendar-check text-amber-600 text-xs"></i>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-amber-600 mt-0.5 leading-tight" id="kpiReadiness">0%</h3>
+                <h3 class="text-lg sm:text-2xl font-black text-amber-600 dark:text-amber-400 mt-0.5 leading-tight"
+                    id="kpiReadiness">0%</h3>
                 <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiReadinessSub">0 of 0
                     Completed</p>
             </div>
@@ -85,12 +112,13 @@
             <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
                 <div
                     class="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                    <span>Stay & Taxis</span>
+                    <span>Rooms & Vehicles</span>
                     <i class="fa-solid fa-hotel text-blue-600 text-xs"></i>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-blue-600 mt-0.5 leading-tight" id="kpiLogistics">0</h3>
-                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiLogisticsSub">Rooms &
-                    Vehicles</p>
+                <h3 class="text-lg sm:text-2xl font-black text-blue-600 dark:text-blue-400 mt-0.5 leading-tight"
+                    id="kpiLogistics">0</h3>
+                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiLogisticsSub">Active Bookings
+                </p>
             </div>
 
             <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
@@ -99,7 +127,8 @@
                     <span>Pooja Items</span>
                     <i class="fa-solid fa-basket-shopping text-indigo-600 text-xs"></i>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-indigo-600 mt-0.5 leading-tight" id="kpiShopping">0</h3>
+                <h3 class="text-lg sm:text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-0.5 leading-tight"
+                    id="kpiShopping">0</h3>
                 <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiShoppingSub">0 Pending</p>
             </div>
 
@@ -109,29 +138,35 @@
                     <span>To-Do Tasks</span>
                     <i class="fa-solid fa-clipboard-check text-rose-600 text-xs"></i>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-rose-600 mt-0.5 leading-tight" id="kpiTodo">0</h3>
+                <h3 class="text-lg sm:text-2xl font-black text-rose-600 dark:text-rose-400 mt-0.5 leading-tight"
+                    id="kpiTodo">0</h3>
                 <p class="text-[10px] text-rose-500 font-semibold truncate mt-0.5" id="kpiTodoSub">Action Required</p>
             </div>
         </div>
 
         <!-- Navigation Tabs & Common Filter Toolbar -->
         <div class="glass-card p-2.5 sm:p-3 rounded-xl border space-y-2.5 shadow-sm">
-            <div class="flex space-x-1 sm:space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200">
+            <div
+                class="flex space-x-1 sm:space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200 dark:border-slate-700">
                 <button onclick="switchTab('dayview')" id="tab-dayview"
                     class="tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg whitespace-nowrap bg-amber-100/70 text-amber-800">
                     Day-by-Day Master
                 </button>
                 <button onclick="switchTab('schedule')" id="tab-schedule"
                     class="tab-btn active px-2.5 py-1.5 text-xs font-bold rounded-lg whitespace-nowrap">
-                    Ritual & Event Agenda
+                    Event Agenda
                 </button>
                 <button onclick="switchTab('food')" id="tab-food"
                     class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
                     Food & Catering
                 </button>
-                <button onclick="switchTab('logistics')" id="tab-logistics"
+                <button onclick="switchTab('rooms')" id="tab-rooms"
                     class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
-                    Rooms & Vehicles
+                    Rooms
+                </button>
+                <button onclick="switchTab('vehicles')" id="tab-vehicles"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    Vehicles
                 </button>
                 <button onclick="switchTab('shopping')" id="tab-shopping"
                     class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
@@ -141,40 +176,45 @@
                     class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
                     To-Do
                 </button>
+                <button onclick="switchTab('contacts')" id="tab-contacts"
+                    class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
+                    <i class="fa-solid fa-address-book mr-1 text-emerald-600"></i> Contact List
+                </button>
             </div>
 
             <!-- Search Bar -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
                 <input type="text" id="searchInput" oninput="renderCurrentTab()"
-                    placeholder="Search ritual, driver, food, room..."
-                    class="w-full pl-7 pr-2 py-1 text-xs bg-slate-100 rounded-lg border border-slate-200 outline-none">
+                    placeholder="Search ritual, driver, hotel, food menu..."
+                    class="w-full pl-7 pr-2 py-1 text-xs bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 outline-none">
             </div>
 
             <!-- Common Day Filter Bar -->
-            <div class="flex items-center gap-1 pt-1.5 border-t border-slate-200 overflow-x-auto">
+            <div class="flex items-center gap-1 pt-1.5 border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
                 <span class="text-[11px] font-bold text-slate-500 shrink-0 mr-1">Day:</span>
                 <button onclick="filterByDay('all')" id="btnDay-all"
                     class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shrink-0 shadow-sm">All
                     Days</button>
                 <button onclick="filterByDay('Nov 19')" id="btnDay-Nov19"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
                     19</button>
                 <button onclick="filterByDay('Nov 20')" id="btnDay-Nov20"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
                     20</button>
                 <button onclick="filterByDay('Nov 21')" id="btnDay-Nov21"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 text-slate-700 shrink-0">Nov
+                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
                     21</button>
             </div>
         </div>
 
-        <!-- 0. DAY-BY-DAY MASTER OVERVIEW SECTION -->
+        <!-- 0. DAY-BY-DAY MASTER OVERVIEW SECTION (5 SEPARATED BLOCKS) -->
         <section id="sec-dayview" class="hidden space-y-3">
             <div
                 class="glass-card p-2.5 sm:p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm bg-gradient-to-r from-amber-500/10 to-transparent">
                 <div>
-                    <h2 class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <h2
+                        class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
                         <i class="fa-solid fa-calendar-check text-amber-600"></i>
                         <span>Daily Master View: <span id="dayviewCurrentLabel" class="text-amber-600 underline">Nov
                                 20</span></span>
@@ -183,13 +223,13 @@
                 </div>
                 <div class="flex items-center gap-1 overflow-x-auto pb-0.5">
                     <button onclick="filterByDay('Nov 19')"
-                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm shrink-0">Nov
                         19</button>
                     <button onclick="filterByDay('Nov 20')"
-                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm shrink-0">Nov
                         20</button>
                     <button onclick="filterByDay('Nov 21')"
-                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white text-slate-700 shadow-sm shrink-0">Nov
+                        class="px-2 py-0.5 text-[10px] font-bold rounded border bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm shrink-0">Nov
                         21</button>
                     <button onclick="filterByDay('all')"
                         class="px-2 py-0.5 text-[10px] font-bold rounded bg-amber-600 text-white shadow-sm shrink-0">All
@@ -197,69 +237,89 @@
                 </div>
             </div>
 
-            <!-- 4 Grid Panels -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <!-- 5 Dedicated Grid Panels -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- 1. Event Agenda -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                    <div class="p-2.5 bg-amber-50 border-b flex justify-between items-center">
-                        <h3 class="text-xs font-bold text-amber-900">Rituals & Events</h3>
+                    <div class="p-2.5 bg-amber-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-amber-900 dark:text-amber-300">Event Agenda</h3>
                         <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200 text-amber-900"
                             id="dayviewScheduleCount">0 Events</span>
                     </div>
                     <div id="dayviewScheduleContainer"
-                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                        class="p-2.5 divide-y divide-slate-100 dark:divide-slate-800 space-y-1.5 max-h-72 overflow-y-auto">
+                    </div>
                 </div>
 
+                <!-- 2. Food (Appans Hotel) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                    <div class="p-2.5 bg-amber-50 border-b flex justify-between items-center">
-                        <h3 class="text-xs font-bold text-amber-900">Food (Appans Hotel)</h3>
+                    <div class="p-2.5 bg-amber-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-amber-900 dark:text-amber-300">Food (Appans Hotel)</h3>
                         <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200 text-amber-900"
                             id="dayviewFoodCount">0 Meals</span>
                     </div>
                     <div id="dayviewFoodContainer"
-                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
+                        class="p-2.5 divide-y divide-slate-100 dark:divide-slate-800 space-y-1.5 max-h-72 overflow-y-auto">
+                    </div>
                 </div>
 
+                <!-- 3. Rooms & Lodging (SEPARATED!) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                    <div class="p-2.5 bg-rose-50 border-b flex justify-between items-center">
-                        <h3 class="text-xs font-bold text-rose-900">To-Do Tasks</h3>
+                    <div class="p-2.5 bg-blue-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-blue-900 dark:text-blue-300">Rooms & Lodging</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-200 text-blue-900"
+                            id="dayviewRoomsCount">0 Rooms</span>
+                    </div>
+                    <div id="dayviewRoomsContainer"
+                        class="p-2.5 divide-y divide-slate-100 dark:divide-slate-800 space-y-1.5 max-h-72 overflow-y-auto">
+                    </div>
+                </div>
+
+                <!-- 4. Vehicles & Drivers (SEPARATED!) -->
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                    <div class="p-2.5 bg-emerald-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-emerald-900 dark:text-emerald-300">Vehicles & Drivers</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-200 text-emerald-900"
+                            id="dayviewVehiclesCount">0 Vehicles</span>
+                    </div>
+                    <div id="dayviewVehiclesContainer"
+                        class="p-2.5 divide-y divide-slate-100 dark:divide-slate-800 space-y-1.5 max-h-72 overflow-y-auto">
+                    </div>
+                </div>
+
+                <!-- 5. To-Do Tasks (Spans 2 cols on desktop) -->
+                <div class="glass-card rounded-xl border overflow-hidden shadow-sm md:col-span-2">
+                    <div class="p-2.5 bg-rose-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-rose-900 dark:text-rose-300">To-Do Tasks</h3>
                         <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-200 text-rose-900"
                             id="dayviewTodoCount">0 Tasks</span>
                     </div>
                     <div id="dayviewTodoContainer"
-                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
-                </div>
-
-                <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                    <div class="p-2.5 bg-blue-50 border-b flex justify-between items-center">
-                        <h3 class="text-xs font-bold text-blue-900">Rooms & Transit</h3>
-                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-200 text-blue-900"
-                            id="dayviewLogisticsCount">Active</span>
+                        class="p-2.5 divide-y divide-slate-100 dark:divide-slate-800 space-y-1.5 max-h-72 overflow-y-auto">
                     </div>
-                    <div id="dayviewLogisticsContainer"
-                        class="p-2.5 divide-y divide-slate-100 space-y-1.5 max-h-72 overflow-y-auto"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 1. Ritual & Event Agenda Section (Read-Only) -->
+        <!-- 1. Event Agenda Section (Read-Only) -->
         <section id="sec-schedule" class="space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                <div class="p-2.5 bg-slate-50 border-b">
-                    <h2 class="text-xs font-bold">Ritual & Event Agenda</h2>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b">
+                    <h2 class="text-xs font-bold">Event Agenda</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
                     <table class="w-full text-left text-xs min-w-[500px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Date & Time</th>
-                                <th class="p-2.5">Ritual / Activity</th>
+                                <th class="p-2.5">Activity / Event</th>
                                 <th class="p-2.5">Location</th>
                                 <th class="p-2.5">Transport</th>
                                 <th class="p-2.5">In-Charge</th>
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
                     </table>
                 </div>
             </div>
@@ -268,7 +328,7 @@
         <!-- 2. Food & Catering Section (Read-Only) -->
         <section id="sec-food" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                <div class="p-2.5 bg-slate-50 border-b flex justify-between items-center">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b flex justify-between items-center">
                     <h2 class="text-xs font-bold">Food & Catering (Appans Hotel)</h2>
                     <span class="text-[10px] font-bold text-amber-600">Sivakasi</span>
                 </div>
@@ -284,41 +344,68 @@
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="foodTableBody" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="foodTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Rooms & Vehicles Section (Read-Only, Tap-To-Call) -->
-        <section id="sec-logistics" class="hidden space-y-3">
+        <!-- 3. Rooms Section (Separated Tab, Read-Only) -->
+        <section id="sec-rooms" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                <div class="p-2.5 bg-slate-50 border-b flex justify-between items-center">
-                    <h2 class="text-xs font-bold">Rooms & Transit Bookings</h2>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b flex justify-between items-center">
+                    <h2 class="text-xs font-bold"><i class="fa-solid fa-hotel text-blue-500 mr-1.5"></i>Room Stays &
+                        Lodging</h2>
                     <span class="text-[10px] text-slate-500">Tap phone to call</span>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[500px]">
+                    <table class="w-full text-left text-xs min-w-[520px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
-                                <th class="p-2.5">Type</th>
-                                <th class="p-2.5">Name</th>
-                                <th class="p-2.5">Details & Phone</th>
+                                <th class="p-2.5">Hotel Name</th>
                                 <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Room Details & Tariff</th>
+                                <th class="p-2.5">Check-in / Check-out</th>
                                 <th class="p-2.5">Booked By</th>
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="logisticsTableBody" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="roomsTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 4. Pooja List Section (Read-Only) -->
+        <!-- 4. Vehicles Section (Separated Tab, Read-Only) -->
+        <section id="sec-vehicles" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b flex justify-between items-center">
+                    <h2 class="text-xs font-bold"><i class="fa-solid fa-taxi text-amber-500 mr-1.5"></i>Vehicle & Taxi
+                        Bookings</h2>
+                    <span class="text-[10px] text-slate-500">Tap phone to call driver</span>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[540px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Travels & Vehicle</th>
+                                <th class="p-2.5">Driver / Contact</th>
+                                <th class="p-2.5">Rate & Pricing</th>
+                                <th class="p-2.5">Timing & Route</th>
+                                <th class="p-2.5">Booked By</th>
+                                <th class="p-2.5 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vehiclesTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Pooja List Section (Read-Only) -->
         <section id="sec-shopping" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                <div class="p-2.5 bg-slate-50 border-b">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b">
                     <h2 class="text-xs font-bold">Pooja Items & Shopping</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
@@ -332,16 +419,16 @@
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="shoppingTableBody" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="shoppingTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 5. To-Do Section (Read-Only) -->
+        <!-- 6. To-Do Section (Read-Only) -->
         <section id="sec-todo" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
-                <div class="p-2.5 bg-slate-50 border-b">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/80 border-b">
                     <h2 class="text-xs font-bold">To-Do Tasks</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
@@ -354,7 +441,39 @@
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="todoTableBody" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="todoTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. MASTER CONTACT DIRECTORY TAB -->
+        <section id="sec-contacts" class="hidden space-y-3">
+            <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                <div class="p-2.5 bg-emerald-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                    <div>
+                        <h2
+                            class="text-xs sm:text-sm font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-address-book text-emerald-600"></i> Master Contact Directory
+                        </h2>
+                        <p class="text-[10px] text-slate-500">Every hotel, driver, caterer & coordinator with instant
+                            tap-to-call</p>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900"
+                        id="contactDirectoryCount">0 Contacts</span>
+                </div>
+                <div class="overflow-x-auto touch-scroll">
+                    <table class="w-full text-left text-xs min-w-[540px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                <th class="p-2.5">Category</th>
+                                <th class="p-2.5">Contact Name & Role</th>
+                                <th class="p-2.5">Phone Number (Tap to Call)</th>
+                                <th class="p-2.5">Location / City</th>
+                                <th class="p-2.5">Service Details / Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactsTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
                     </table>
                 </div>
             </div>
@@ -362,12 +481,13 @@
 
     </main>
 
-    <!-- Self-Contained Guest Showcase Script (Direct Live Fetch from Google Sheet) -->
+    <!-- Self-Contained Guest Showcase Script -->
     <script>
-        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbywSddStVn2OJUglt7X9uAAtHgnrXu2Z-KjBrL1vIAqj6UtzuzWYSHFKeC707JvhMk/exec";
+        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbw4PnVn44BmMAFUrZ34fVPAlKUYLKk2ztD6jCvFYxKjYgH5sVSio0fVYeGa-SFJAYrB/exec";
 
         let scheduleData = [];
-        let logisticsData = [];
+        let roomsData = [];
+        let vehiclesData = [];
         let shoppingData = [];
         let todoData = [];
         let foodData = [];
@@ -376,7 +496,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchLiveGuestData();
-            setInterval(fetchLiveGuestData, 30000); // 30s auto-refresh
+            setInterval(fetchLiveGuestData, 30000);
         });
 
         async function fetchLiveGuestData() {
@@ -385,7 +505,7 @@
                 const data = await res.json();
 
                 if (Array.isArray(data) && data.length > 1) {
-                    let s = [], l = [], sh = [], td = [], fd = [];
+                    let s = [], rm = [], vh = [], sh = [], td = [], fd = [];
                     const seen = new Set();
 
                     for (let i = 1; i < data.length; i++) {
@@ -403,6 +523,17 @@
                                 caterer: r[4] || 'Appans Hotel', place: r[5] || 'Sivakasi', bookedBy: r[6],
                                 contactPerson: r[7], status: r[8] || 'Confirmed', menu: r[9], headcount: r[10] || '40 Max'
                             });
+                        } else if (sec === 'rooms' || (sec === 'logistics' && String(r[2]).includes('Room'))) {
+                            rm.push({
+                                id, name: r[4] || 'Hotel', location: r[5] || 'Sivakasi', phone: extractPhone(r[3]),
+                                details: r[3] || '', timing: r[6] || '', bookedBy: r[7] || 'Arunkumar', status: r[8] || 'Confirmed'
+                            });
+                        } else if (sec === 'vehicles' || (sec === 'logistics' && String(r[2]).includes('Vehicle'))) {
+                            vh.push({
+                                id, name: r[4] || 'Travels', model: r[4], contactPerson: r[7] || '', phone: extractPhone(r[3]),
+                                location: r[5] || '', rate: r[3] || '', timing: r[6] || '', bookedBy: 'Arunkumar',
+                                status: r[8] || 'Confirmed', notes: r[9] || ''
+                            });
                         } else {
                             const item = {
                                 id, section: sec, date: cleanDate(r[2]) || r[2], category: r[2],
@@ -411,13 +542,17 @@
                                 person: r[7], status: r[8] || 'Confirmed'
                             };
                             if (sec === 'schedule') s.push(item);
-                            else if (sec === 'logistics') l.push(item);
                             else if (sec === 'shopping') sh.push(item);
                             else if (sec === 'todo') td.push(item);
                         }
                     }
 
-                    scheduleData = s; logisticsData = l; shoppingData = sh; todoData = td; foodData = fd;
+                    scheduleData = s;
+                    roomsData = rm;
+                    vehiclesData = vh;
+                    shoppingData = sh;
+                    todoData = td;
+                    foodData = fd;
                     renderAll();
                 }
             } catch (err) {
@@ -464,6 +599,12 @@
             return text.replace(/(\+?\d[\d\s-]{8,14}\d)/g, '<a href="tel:$1" class="text-amber-600 font-bold underline inline-flex items-center gap-1"><i class="fa-solid fa-phone text-[9px]"></i>$1</a>');
         }
 
+        function extractPhone(text) {
+            if (!text) return '';
+            const match = text.match(/(\+?\d[\d\s-]{8,14}\d)/);
+            return match ? match[0] : '';
+        }
+
         function getReadOnlyStatus(status) {
             const map = {
                 'Completed': 'bg-emerald-100 text-emerald-800 border-emerald-300',
@@ -481,10 +622,10 @@
             const doneSched = scheduleData.filter(i => i.status === 'Completed' || i.status === 'Confirmed').length;
             const pct = totalSched > 0 ? Math.round((doneSched / totalSched) * 100) : 0;
             document.getElementById('kpiReadiness').innerText = pct + '%';
-            document.getElementById('kpiReadinessSub').innerText = `${doneSched} of ${totalSched} Ready/Done`;
+            document.getElementById('kpiReadinessSub').innerText = `${doneSched} of ${totalSched} Ready`;
 
-            document.getElementById('kpiLogistics').innerText = logisticsData.length;
-            document.getElementById('kpiLogisticsSub').innerText = 'Rooms & Vehicles';
+            document.getElementById('kpiLogistics').innerText = (roomsData.length + vehiclesData.length);
+            document.getElementById('kpiLogisticsSub').innerText = `${roomsData.length} Rooms, ${vehiclesData.length} Vehicles`;
 
             const pendingShop = shoppingData.filter(i => i.status !== 'Completed').length;
             document.getElementById('kpiShopping').innerText = shoppingData.length;
@@ -498,9 +639,11 @@
         function renderAll() {
             renderScheduleTable();
             renderFoodTable();
-            renderLogisticsTable();
+            renderRoomsTable();
+            renderVehiclesTable();
             renderShoppingTable();
             renderTodoTable();
+            renderContactsTable();
             renderDayOverview();
             updateKPIs();
         }
@@ -509,9 +652,11 @@
             if (activeTab === 'dayview') renderDayOverview();
             else if (activeTab === 'schedule') renderScheduleTable();
             else if (activeTab === 'food') renderFoodTable();
-            else if (activeTab === 'logistics') renderLogisticsTable();
+            else if (activeTab === 'rooms') renderRoomsTable();
+            else if (activeTab === 'vehicles') renderVehiclesTable();
             else if (activeTab === 'shopping') renderShoppingTable();
             else if (activeTab === 'todo') renderTodoTable();
+            else if (activeTab === 'contacts') renderContactsTable();
         }
 
         function filterByDay(day) {
@@ -532,7 +677,7 @@
 
         function switchTab(tabId) {
             activeTab = tabId;
-            ['dayview', 'schedule', 'food', 'logistics', 'shopping', 'todo'].forEach(t => {
+            ['dayview', 'schedule', 'food', 'rooms', 'vehicles', 'shopping', 'todo', 'contacts'].forEach(t => {
                 const sec = document.getElementById('sec-' + t);
                 const tab = document.getElementById('tab-' + t);
                 if (sec) sec.classList.add('hidden');
@@ -551,143 +696,233 @@
             renderCurrentTab();
         }
 
+        // 1. EVENT AGENDA TABLE (READ-ONLY)
         function renderScheduleTable() {
             const tbody = document.getElementById('scheduleTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
             const rows = scheduleData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No events found.</td></tr>` :
                 rows.map(r => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-2.5 whitespace-nowrap"><span class="font-bold text-amber-600">${r.date}</span><span class="text-[10px] text-slate-400 block">${r.time}</span></td>
-                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
-                        <td class="p-2.5 text-slate-600"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
-                        <td class="p-2.5 text-slate-600">${r.transport}</td>
-                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5 whitespace-nowrap"><span class="font-bold text-amber-600 block">${r.date}</span><span class="text-[10px] text-slate-400 block">${r.time}</span></td>
+                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
+                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
+                        <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.transport}</td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
+        // 2. FOOD TABLE (READ-ONLY)
         function renderFoodTable() {
             const tbody = document.getElementById('foodTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
             const rows = foodData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No catering meals found.</td></tr>` :
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No meals found.</td></tr>` :
                 rows.map(r => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-2.5 whitespace-nowrap"><span class="font-extrabold text-amber-600">${r.mealType}</span><span class="text-[10px] text-slate-400 block">${r.time} • ${r.date}</span></td>
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5 whitespace-nowrap"><span class="font-extrabold text-amber-600 block">${r.mealType}</span><span class="text-[10px] text-slate-400 block">${r.time} • ${r.date}</span></td>
                         <td class="p-2.5 font-bold">${r.caterer}<span class="text-[10px] text-slate-400 block">${r.place}</span></td>
-                        <td class="p-2.5"><div class="text-[11px] bg-amber-50 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div></td>
-                        <td class="p-2.5 text-slate-700 font-semibold">${r.headcount}</td>
-                        <td class="p-2.5 text-slate-600">${r.contactPerson || r.bookedBy || '—'}</td>
+                        <td class="p-2.5"><div class="text-[11px] bg-amber-50 dark:bg-amber-950/40 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div></td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300 font-semibold">${r.headcount}</td>
+                        <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.contactPerson || r.bookedBy || '—'}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
-        function renderLogisticsTable() {
-            const tbody = document.getElementById('logisticsTableBody');
+        // 3. ROOMS TABLE (SEPARATE TAB, READ-ONLY)
+        function renderRoomsTable() {
+            const tbody = document.getElementById('roomsTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = logisticsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No bookings found.</td></tr>` :
+            const rows = roomsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No rooms found.</td></tr>` :
                 rows.map(r => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-blue-100 text-blue-700">${r.category}</span></td>
-                        <td class="p-2.5 font-bold text-slate-800">${r.name}</td>
-                        <td class="p-2.5 text-[11px] text-slate-600">${highlightPhoneNumbers(r.details)}</td>
-                        <td class="p-2.5 text-slate-600">${r.location}</td>
-                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${r.name}</td>
+                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${highlightPhoneNumbers(r.details)}</td>
+                        <td class="p-2.5 text-[11px] font-semibold text-amber-600">${r.timing}</td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.bookedBy}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
+        // 4. VEHICLES TABLE (SEPARATE TAB, READ-ONLY)
+        function renderVehiclesTable() {
+            const tbody = document.getElementById('vehiclesTableBody');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            const rows = vehiclesData.filter(i => !search || i.name.toLowerCase().includes(search) || i.model.toLowerCase().includes(search));
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No vehicles found.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${r.name}<span class="text-[10px] text-slate-400 block">${r.model}</span></td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">
+                            <div class="font-semibold">${r.contactPerson}</div>
+                            <div class="text-[10px]">${highlightPhoneNumbers(r.phone)}</div>
+                        </td>
+                        <td class="p-2.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">${r.rate}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">
+                            <div>${r.timing}</div>
+                            ${r.notes ? `<div class="text-[10px] text-amber-600 italic">${r.notes}</div>` : ''}
+                        </td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.bookedBy}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        // 5. POOJA LIST TABLE (READ-ONLY)
         function renderShoppingTable() {
             const tbody = document.getElementById('shoppingTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
             const rows = shoppingData.filter(i => !search || i.title.toLowerCase().includes(search));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No pooja items found.</td></tr>` :
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No items found.</td></tr>` :
                 rows.map(r => `
-                    <tr class="hover:bg-slate-50 transition">
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-indigo-100 text-indigo-700">${r.category}</span></td>
-                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
-                        <td class="p-2.5 text-[11px] text-slate-600">${r.notes || '—'}</td>
-                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${r.notes || '—'}</td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
+        // 6. TO-DO TABLE (READ-ONLY)
         function renderTodoTable() {
             const tbody = document.getElementById('todoTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
             const rows = todoData.filter(i => (currentDayFilter === 'all' || (i.date && i.date.includes(currentDayFilter)) || (i.time && i.time.includes(currentDayFilter))) && (!search || i.title.toLowerCase().includes(search)));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="4" class="p-4 text-center text-slate-400">No to-do tasks found.</td></tr>` :
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="4" class="p-4 text-center text-slate-400">No tasks found.</td></tr>` :
                 rows.map(r => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-2.5 font-semibold text-slate-800">${r.title}</td>
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
                         <td class="p-2.5 text-[10px] text-slate-500 font-bold">${r.time || r.date}</td>
-                        <td class="p-2.5 text-slate-700">${r.person}</td>
+                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
+        // 7. MASTER CONTACT DIRECTORY (READ-ONLY)
+        function renderContactsTable() {
+            const tbody = document.getElementById('contactsTableBody');
+            if (!tbody) return;
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+
+            const contacts = [
+                { category: 'Hotel Manager', name: 'Sri Kaliswari Le Archids Manager', phone: '8098615353', location: 'Sivakasi', service: '3 Double Bedrooms Booking (Nov 19-21)' },
+                { category: 'Hotel Manager', name: 'JB Sri Ram Residency Manager', phone: '7305153210', location: 'Virudhunagar', service: 'Mini & Premium Suites Booking (Nov 20-21)' },
+                { category: 'Driver / Travels', name: 'Viji (Luxury Vacations)', phone: '8489489383', location: 'Sivakasi', service: 'Mahindra Marazzo (7 Seater) Driver' },
+                { category: 'Driver / Travels', name: 'Soundararajan K P (Sri Annai Travels)', phone: '9360188819', location: 'Virudhunagar', service: 'Force Urbania (14-Str) & Toyota Innova Booking' },
+                { category: 'Priest / Iyer', name: 'Iyer Kalidass', phone: '—', location: 'Pooja Hall', service: 'Ganapathy Homam & All Ceremonies (Adv: ₹500, Tot: ₹6000)' },
+                { category: 'Catering Lead', name: 'Appans Hotel Catering Team', phone: '—', location: 'Sivakasi', service: 'Breakfast (60 Pax), Lunch, Snacks, Dinner' },
+                { category: 'Coordinator Lead', name: 'Arunkumar', phone: '—', location: 'Family', service: 'Overall Bookings, Finances & Vendor Management' }
+            ];
+
+            const filtered = contacts.filter(c => !search || c.name.toLowerCase().includes(search) || c.category.toLowerCase().includes(search) || c.location.toLowerCase().includes(search) || c.phone.includes(search));
+
+            const countEl = document.getElementById('contactDirectoryCount');
+            if (countEl) countEl.innerText = `${filtered.length} Contacts`;
+
+            tbody.innerHTML = filtered.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No contacts found.</td></tr>` :
+                filtered.map(c => `
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded-lg ${c.category.includes('Hotel') ? 'bg-blue-100 text-blue-800' : c.category.includes('Driver') ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${c.category}</span></td>
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${c.name}</td>
+                        <td class="p-2.5 font-semibold text-emerald-600 text-xs">${highlightPhoneNumbers(c.phone)}</td>
+                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${c.location}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${c.service}</td>
+                    </tr>
+                `).join('');
+        }
+
+        // 0. DAY-BY-DAY MASTER OVERVIEW (5 SEPARATE BLOCKS)
         function renderDayOverview() {
             const day = currentDayFilter;
             const filterFn = i => day === 'all' || (i.date && i.date.includes(day)) || (i.time && i.time.includes(day));
 
+            // 1. Events
             const dayS = scheduleData.filter(filterFn);
             document.getElementById('dayviewScheduleCount').innerText = `${dayS.length} Events`;
-            document.getElementById('dayviewScheduleContainer').innerHTML = dayS.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rituals scheduled for this day.</p>` :
+            document.getElementById('dayviewScheduleContainer').innerHTML = dayS.length === 0 ? `<p class="text-xs text-slate-400 py-2">No events scheduled for this day.</p>` :
                 dayS.map(r => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
-                            <span class="text-xs font-bold text-slate-800 block">${r.title}</span>
+                            <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.title}</span>
                             <span class="text-[10px] text-amber-600 font-semibold">${r.time} • ${r.location}</span>
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
 
+            // 2. Food
             const dayF = foodData.filter(i => day === 'all' || (i.date && i.date.includes(day)));
             document.getElementById('dayviewFoodCount').innerText = `${dayF.length} Meals`;
-            document.getElementById('dayviewFoodContainer').innerHTML = dayF.length === 0 ? `<p class="text-xs text-slate-400 py-2">No catering meals logged for this day.</p>` :
+            document.getElementById('dayviewFoodContainer').innerHTML = dayF.length === 0 ? `<p class="text-xs text-slate-400 py-2">No meals logged for this day.</p>` :
                 dayF.map(r => {
                     const mealDisplay = r.mealType && r.time && r.mealType !== r.time ? `${r.mealType} (${r.time})` : (r.mealType || r.time);
                     return `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-amber-600 block">${mealDisplay}</span>
-                            <span class="text-[10px] text-slate-700 font-medium block">${r.menu || 'Menu TBD'}</span>
+                            <span class="text-[10px] text-slate-700 dark:text-slate-300 font-medium block">${r.menu || 'Menu TBD'}</span>
                             <span class="text-[9px] text-slate-400">${r.caterer} • ${r.headcount}</span>
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `}).join('');
 
+            // 3. Rooms & Lodging (SEPARATED!)
+            document.getElementById('dayviewRoomsCount').innerText = `${roomsData.length} Bookings`;
+            document.getElementById('dayviewRoomsContainer').innerHTML = roomsData.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rooms booked.</p>` :
+                roomsData.map(r => `
+                    <div class="py-1.5 flex items-start justify-between gap-1">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.name}</span>
+                            <span class="text-[10px] text-blue-600 font-semibold block">${highlightPhoneNumbers(r.phone)} • ${r.location}</span>
+                            <span class="text-[9px] text-slate-400 block">${r.timing}</span>
+                        </div>
+                        <div>${getReadOnlyStatus(r.status)}</div>
+                    </div>
+                `).join('');
+
+            // 4. Vehicles & Drivers (SEPARATED!)
+            document.getElementById('dayviewVehiclesCount').innerText = `${vehiclesData.length} Vehicles`;
+            document.getElementById('dayviewVehiclesContainer').innerHTML = vehiclesData.length === 0 ? `<p class="text-xs text-slate-400 py-2">No vehicles booked.</p>` :
+                vehiclesData.map(v => `
+                    <div class="py-1.5 flex items-start justify-between gap-1">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${v.name}</span>
+                            <span class="text-[10px] text-emerald-600 font-semibold block">${highlightPhoneNumbers(v.phone)} • ${v.rate}</span>
+                            <span class="text-[9px] text-slate-400 block">${v.timing}</span>
+                        </div>
+                        <div>${getReadOnlyStatus(v.status)}</div>
+                    </div>
+                `).join('');
+
+            // 5. To-Do
             const dayT = todoData.filter(filterFn);
             document.getElementById('dayviewTodoCount').innerText = `${dayT.length} Tasks`;
             document.getElementById('dayviewTodoContainer').innerHTML = dayT.length === 0 ? `<p class="text-xs text-slate-400 py-2">No to-dos for this day.</p>` :
                 dayT.map(r => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
-                            <span class="text-xs font-semibold text-slate-800 block">${r.title}</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-100 block">${r.title}</span>
                             <span class="text-[10px] text-slate-500">${r.time || r.date} • ${r.person}</span>
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
+        }
 
-            document.getElementById('dayviewLogisticsContainer').innerHTML = logisticsData.map(r => `
-                <div class="py-1 flex items-center justify-between text-xs">
-                    <div>
-                        <span class="font-bold text-slate-800 block">${r.name}</span>
-                        <span class="text-[10px] text-slate-500">${highlightPhoneNumbers(r.details)}</span>
-                    </div>
-                    <div>${getReadOnlyStatus(r.status)}</div>
-                </div>
-            `).join('');
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            const icon = document.getElementById('themeIcon');
+            icon.className = document.body.classList.contains('dark') ? 'fa-solid fa-sun text-amber-400' : 'fa-solid fa-moon';
         }
     </script>
 </body>
