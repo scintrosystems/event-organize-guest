@@ -65,7 +65,7 @@
 <body
     class="bg-amber-50/40 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen transition-colors duration-200 overflow-x-hidden">
 
-    <!-- Welcoming Hero Header (Strictly 320px Ready) -->
+    <!-- Welcoming Hero Header -->
     <header
         class="sticky top-0 z-40 bg-gradient-to-r from-amber-600 to-amber-700 dark:bg-slate-800 text-white shadow-md">
         <div class="w-full max-w-7xl mx-auto px-2.5 sm:px-6 py-2 flex items-center justify-between gap-1.5">
@@ -96,7 +96,7 @@
 
     <main class="w-full max-w-7xl mx-auto px-2 sm:px-6 py-3 space-y-3">
 
-        <!-- Progress Metrics Cards (Zero Overlapping Icons) -->
+        <!-- Progress Metrics Cards -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
                 <div
@@ -106,8 +106,8 @@
                 </div>
                 <h3 class="text-lg sm:text-2xl font-black text-amber-600 dark:text-amber-400 mt-0.5 leading-tight"
                     id="kpiReadiness">0%</h3>
-                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiReadinessSub">0 of 0 Ready
-                </p>
+                <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5" id="kpiReadinessSub">0 of 0
+                    Completed</p>
             </div>
 
             <div class="glass-card p-2.5 sm:p-3.5 rounded-xl border shadow-sm">
@@ -145,9 +145,8 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs & Common Filter Toolbar -->
+        <!-- Navigation Tabs & Toolbar (With Custom Tabs Container & Time Sorting) -->
         <div class="glass-card p-2.5 sm:p-3 rounded-xl border space-y-2.5 shadow-sm">
-            <!-- 8 Tabs (Separated Rooms, Vehicles & Contacts) -->
             <div
                 class="flex space-x-1 sm:space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200 dark:border-slate-700">
                 <button onclick="switchTab('dayview')" id="tab-dayview"
@@ -182,9 +181,12 @@
                     class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
                     <i class="fa-solid fa-address-book mr-1 text-emerald-600"></i> Contact List
                 </button>
+
+                <!-- DYNAMIC CUSTOM TABS CONTAINER (AUTO-SYNCED FROM ADMIN) -->
+                <div id="dynamicTabButtonsContainer" class="flex space-x-1 sm:space-x-1.5"></div>
             </div>
 
-            <!-- Search Bar (No +Add button) -->
+            <!-- Search Bar -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
                 <input type="text" id="searchInput" oninput="renderCurrentTab()"
@@ -192,27 +194,38 @@
                     class="w-full pl-7 pr-2 py-1 text-xs bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 outline-none">
             </div>
 
-            <!-- Common Day Filter Bar -->
-            <div class="flex items-center gap-1 pt-1.5 border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
-                <span class="text-[11px] font-bold text-slate-500 shrink-0 mr-1">Day:</span>
-                <button onclick="filterByDay('all')" id="btnDay-all"
-                    class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shrink-0 shadow-sm">All
-                    Days</button>
-                <button onclick="filterByDay('Nov 19')" id="btnDay-Nov19"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
-                    19</button>
-                <button onclick="filterByDay('Nov 20')" id="btnDay-Nov20"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
-                    20</button>
-                <button onclick="filterByDay('Nov 21')" id="btnDay-Nov21"
-                    class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
-                    21</button>
+            <!-- Common Day Filter Bar + TIME-WISE SORTING TOGGLE -->
+            <div
+                class="flex items-center justify-between gap-1 pt-1.5 border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
+                <div class="flex items-center gap-1 shrink-0">
+                    <span class="text-[11px] font-bold text-slate-500 mr-1">Day:</span>
+                    <button onclick="filterByDay('all')" id="btnDay-all"
+                        class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shrink-0 shadow-sm">All
+                        Days</button>
+                    <button onclick="filterByDay('Nov 19')" id="btnDay-Nov19"
+                        class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
+                        19</button>
+                    <button onclick="filterByDay('Nov 20')" id="btnDay-Nov20"
+                        class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
+                        20</button>
+                    <button onclick="filterByDay('Nov 21')" id="btnDay-Nov21"
+                        class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0">Nov
+                        21</button>
+                </div>
+
+                <!-- Time-wise sorting button for guests -->
+                <div class="flex items-center gap-1 shrink-0 ml-auto">
+                    <span class="text-[11px] font-bold text-slate-500 mr-1">Time:</span>
+                    <button onclick="toggleTimeSort()" id="btnTimeSort"
+                        class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-amber-100 flex items-center gap-1 transition">
+                        <i class="fa-solid fa-arrow-down-short-wide text-[10px]"></i>
+                        <span id="timeSortLabel">Default</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- ========================================================================= -->
-        <!-- 0. DAY-BY-DAY MASTER OVERVIEW (5 SEPARATED DEDICATED BLOCKS)             -->
-        <!-- ========================================================================= -->
+        <!-- 0. DAY-BY-DAY MASTER OVERVIEW SECTION (5 SEPARATE BLOCKS) -->
         <section id="sec-dayview" class="hidden space-y-3">
             <div
                 class="glass-card p-2.5 sm:p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm bg-gradient-to-r from-amber-500/10 to-transparent">
@@ -223,8 +236,7 @@
                         <span>Daily Master View: <span id="dayviewCurrentLabel" class="text-amber-600 underline">Nov
                                 20</span></span>
                     </h2>
-                    <p class="text-[10px] text-slate-500">Live agenda, Appans Hotel feast, lodging, vehicles & to-dos
-                    </p>
+                    <p class="text-[10px] text-slate-500">Live ceremonies, Appans Hotel feast, to-dos & transit</p>
                 </div>
                 <div class="flex items-center gap-1 overflow-x-auto pb-0.5">
                     <button onclick="filterByDay('Nov 19')"
@@ -244,7 +256,6 @@
 
             <!-- 5 Dedicated Grid Panels -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <!-- 1. Event Agenda -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                     <div class="p-2.5 bg-amber-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
                         <h3 class="text-xs font-bold text-amber-900 dark:text-amber-300">Event Agenda</h3>
@@ -256,7 +267,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Food (Appans Hotel) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                     <div class="p-2.5 bg-amber-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
                         <h3 class="text-xs font-bold text-amber-900 dark:text-amber-300">Food (Appans Hotel)</h3>
@@ -268,7 +278,6 @@
                     </div>
                 </div>
 
-                <!-- 3. Rooms & Lodging (SEPARATED!) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                     <div class="p-2.5 bg-blue-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
                         <h3 class="text-xs font-bold text-blue-900 dark:text-blue-300">Rooms & Lodging</h3>
@@ -280,7 +289,6 @@
                     </div>
                 </div>
 
-                <!-- 4. Vehicles & Drivers (SEPARATED!) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                     <div class="p-2.5 bg-emerald-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
                         <h3 class="text-xs font-bold text-emerald-900 dark:text-emerald-300">Vehicles & Drivers</h3>
@@ -292,7 +300,6 @@
                     </div>
                 </div>
 
-                <!-- 5. To-Do Tasks (Spans 2 cols on desktop) -->
                 <div class="glass-card rounded-xl border overflow-hidden shadow-sm md:col-span-2">
                     <div class="p-2.5 bg-rose-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
                         <h3 class="text-xs font-bold text-rose-900 dark:text-rose-300">To-Do Tasks</h3>
@@ -313,12 +320,12 @@
                     <h2 class="text-xs font-bold">Event Agenda</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[500px]">
+                    <table class="w-full text-left text-xs min-w-[560px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Date & Time</th>
                                 <th class="p-2.5">Activity / Event</th>
-                                <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Location (Google Maps)</th>
                                 <th class="p-2.5">Transport</th>
                                 <th class="p-2.5">In-Charge</th>
                                 <th class="p-2.5 text-right">Status</th>
@@ -338,11 +345,11 @@
                     <span class="text-[10px] font-bold text-amber-600">Sivakasi</span>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[540px]">
+                    <table class="w-full text-left text-xs min-w-[580px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Meal & Timing</th>
-                                <th class="p-2.5">Caterer</th>
+                                <th class="p-2.5">Caterer & Location</th>
                                 <th class="p-2.5">Menu</th>
                                 <th class="p-2.5">Headcount</th>
                                 <th class="p-2.5">Contact</th>
@@ -364,11 +371,11 @@
                     <span class="text-[10px] text-slate-500">Tap phone to call</span>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[520px]">
+                    <table class="w-full text-left text-xs min-w-[560px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Hotel Name</th>
-                                <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Location (Google Maps)</th>
                                 <th class="p-2.5">Room Details & Tariff</th>
                                 <th class="p-2.5">Check-in / Check-out</th>
                                 <th class="p-2.5">Booked By</th>
@@ -390,14 +397,14 @@
                     <span class="text-[10px] text-slate-500">Tap phone to call driver</span>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[540px]">
+                    <table class="w-full text-left text-xs min-w-[580px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Travels & Vehicle</th>
                                 <th class="p-2.5">Driver / Contact</th>
+                                <th class="p-2.5">Location (Google Maps)</th>
                                 <th class="p-2.5">Rate & Pricing</th>
                                 <th class="p-2.5">Timing & Route</th>
-                                <th class="p-2.5">Booked By</th>
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
                         </thead>
@@ -414,7 +421,7 @@
                     <h2 class="text-xs font-bold">Pooja Items & Shopping</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[480px]">
+                    <table class="w-full text-left text-xs min-w-[540px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Category</th>
@@ -437,11 +444,12 @@
                     <h2 class="text-xs font-bold">To-Do Tasks</h2>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[460px]">
+                    <table class="w-full text-left text-xs min-w-[500px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Task Description</th>
                                 <th class="p-2.5">Deadline</th>
+                                <th class="p-2.5">Notes</th>
                                 <th class="p-2.5">Person</th>
                                 <th class="p-2.5 text-right">Status</th>
                             </tr>
@@ -452,7 +460,7 @@
             </div>
         </section>
 
-        <!-- 7. MASTER CONTACT DIRECTORY TAB (READ-ONLY) -->
+        <!-- 7. MASTER CONTACT DIRECTORY TAB (READ-ONLY, ONE-TAP CALL) -->
         <section id="sec-contacts" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                 <div class="p-2.5 bg-emerald-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
@@ -461,18 +469,19 @@
                             class="text-xs sm:text-sm font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1.5">
                             <i class="fa-solid fa-address-book text-emerald-600"></i> Master Contact Directory
                         </h2>
+                        <p class="text-[10px] text-slate-500">Tap phone numbers to call directly</p>
                     </div>
                     <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900"
                         id="contactDirectoryCount">0 Contacts</span>
                 </div>
                 <div class="overflow-x-auto touch-scroll">
-                    <table class="w-full text-left text-xs min-w-[540px]">
+                    <table class="w-full text-left text-xs min-w-[580px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                 <th class="p-2.5">Category</th>
                                 <th class="p-2.5">Contact Name & Role</th>
                                 <th class="p-2.5">Phone Number (Tap to Call)</th>
-                                <th class="p-2.5">Location / City</th>
+                                <th class="p-2.5">Location (Google Maps)</th>
                                 <th class="p-2.5">Service Details / Notes</th>
                             </tr>
                         </thead>
@@ -482,11 +491,13 @@
             </div>
         </section>
 
+        <!-- DYNAMIC CUSTOM SECTIONS CONTAINER (FOR ANY CUSTOM TABS CREATED IN ADMIN) -->
+        <div id="dynamicSectionsContainer"></div>
+
     </main>
 
     <!-- Self-Contained Guest Showcase Script (Dynamic Live Fetch) -->
     <script>
-        // ✅ NEW GOOGLE SHEET URL
         const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbw4PnVn44BmMAFUrZ34fVPAlKUYLKk2ztD6jCvFYxKjYgH5sVSio0fVYeGa-SFJAYrB/exec";
 
         let scheduleData = [];
@@ -496,12 +507,16 @@
         let todoData = [];
         let foodData = [];
         let contactsData = [];
+        let customSections = [];
+        let customItemsData = [];
+
         let activeTab = 'schedule';
         let currentDayFilter = 'all';
+        let currentTimeSort = 'none';
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchLiveGuestData();
-            setInterval(fetchLiveGuestData, 30000); // Auto sync every 30 seconds
+            setInterval(fetchLiveGuestData, 30000); // 30s auto background sync
         });
 
         async function fetchLiveGuestData() {
@@ -510,7 +525,7 @@
                 const data = await res.json();
 
                 if (Array.isArray(data) && data.length > 1) {
-                    let s = [], rm = [], vh = [], sh = [], td = [], fd = [], ct = [];
+                    let s = [], rm = [], vh = [], sh = [], td = [], fd = [], ct = [], custSec = [], custItems = [];
                     const seen = new Set();
 
                     for (let i = 1; i < data.length; i++) {
@@ -522,16 +537,23 @@
 
                         const sec = String(r[1] || 'schedule').toLowerCase().trim();
 
-                        if (sec === 'food') {
+                        if (sec === 'meta_section') {
+                            custSec.push({ id: String(r[2]), name: r[4] });
+                        } else if (sec.startsWith('custom_')) {
+                            custItems.push({
+                                id, section: sec, title: r[4] || '', date: r[2] || '', time: r[3] || '',
+                                location: r[5] || '', transport: r[6] || '', person: r[7] || '', status: r[8] || 'Confirmed', notes: r[11] || r[9] || ''
+                            });
+                        } else if (sec === 'food') {
                             fd.push({
                                 id, date: cleanDate(r[2]) || 'Nov 20', time: cleanTime(r[3]), mealType: r[3] || 'Meal',
                                 caterer: r[4] || 'Appans Hotel', place: r[5] || 'Sivakasi', bookedBy: r[6],
-                                contactPerson: r[7], status: r[8] || 'Confirmed', menu: r[9], headcount: r[10] || '40 Max'
+                                contactPerson: r[7], status: r[8] || 'Confirmed', menu: r[9], headcount: r[10] || '40 Max', notes: r[11] || ''
                             });
                         } else if (sec === 'rooms' || (sec === 'logistics' && String(r[2]).includes('Room'))) {
                             rm.push({
                                 id, name: r[4] || 'Hotel', location: r[5] || 'Sivakasi', phone: extractPhone(r[3]),
-                                details: r[3] || '', timing: r[6] || '', bookedBy: r[7] || 'Arunkumar', status: r[8] || 'Confirmed'
+                                details: r[3] || '', timing: r[6] || '', bookedBy: r[7] || 'Arunkumar', status: r[8] || 'Confirmed', notes: r[9] || ''
                             });
                         } else if (sec === 'vehicles' || (sec === 'logistics' && String(r[2]).includes('Vehicle'))) {
                             vh.push({
@@ -542,12 +564,12 @@
                         } else if (sec === 'contacts') {
                             ct.push({
                                 id, category: r[2] || 'Coordinator', service: r[3] || '',
-                                name: r[4] || '', location: r[5] || '', phone: r[7] || '—'
+                                name: r[4] || '', location: r[5] || '', phone: r[7] || '—', notes: r[9] || ''
                             });
                         } else {
                             const item = {
                                 id, section: sec, date: cleanDate(r[2]) || r[2], category: r[2],
-                                time: cleanTime(r[3]) || r[3], details: r[3], notes: r[3],
+                                time: cleanTime(r[3]) || r[3], details: r[3], notes: r[9] || r[3] || '',
                                 title: r[4], name: r[4], location: r[5], transport: r[6],
                                 person: r[7], status: r[8] || 'Confirmed'
                             };
@@ -564,10 +586,74 @@
                     todoData = td;
                     foodData = fd;
                     contactsData = ct;
+                    customSections = custSec;
+                    customItemsData = custItems;
+
                     renderAll();
                 }
             } catch (err) {
                 console.error("Live fetch failed", err);
+            }
+        }
+
+        // GOOGLE MAPS LINK HELPER
+        function formatLocationLink(loc) {
+            if (!loc || loc === '—') return '—';
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`;
+            return `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="text-rose-600 dark:text-rose-400 font-semibold hover:underline inline-flex items-center gap-1 group" title="Open in Google Maps">
+                <i class="fa-solid fa-location-dot text-rose-500 text-[10px] group-hover:scale-125 transition"></i>
+                <span>${loc}</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[8px] opacity-70"></i>
+            </a>`;
+        }
+
+        // TIME PARSER FOR ACCURATE CHRONOLOGICAL SORTING
+        function parseTimeToMinutes(timeStr) {
+            if (!timeStr) return 9999;
+            const s = String(timeStr).trim();
+
+            if (s.toLowerCase().includes('morning') && !s.match(/\d:\d/)) return 480;
+            if (s.toLowerCase().includes('afternoon') && !s.match(/\d:\d/)) return 780;
+            if (s.toLowerCase().includes('evening') && !s.match(/\d:\d/)) return 1020;
+            if (s.toLowerCase().includes('night') && !s.match(/\d:\d/)) return 1260;
+
+            let match = s.match(/(?:^|[^\d])(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i);
+            if (!match) match = s.match(/(?:^|[^\d])(\d{1,2})\s*(AM|PM)/i);
+            if (!match) return 9999;
+
+            let hours = parseInt(match[1], 10);
+            let minutes = match[2] && !isNaN(parseInt(match[2], 10)) ? parseInt(match[2], 10) : 0;
+            let ampm = (match[3] || match[2] || '').toUpperCase();
+
+            if (ampm === 'PM' && hours < 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+
+            return hours * 60 + minutes;
+        }
+
+        function toggleTimeSort() {
+            if (currentTimeSort === 'none') currentTimeSort = 'asc';
+            else if (currentTimeSort === 'asc') currentTimeSort = 'desc';
+            else currentTimeSort = 'none';
+
+            updateTimeSortUI();
+            renderAll();
+        }
+
+        function updateTimeSortUI() {
+            const btn = document.getElementById('btnTimeSort');
+            const lbl = document.getElementById('timeSortLabel');
+            if (!btn || !lbl) return;
+
+            if (currentTimeSort === 'asc') {
+                lbl.innerText = 'Earliest ⬆';
+                btn.className = 'px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shadow-sm flex items-center gap-1';
+            } else if (currentTimeSort === 'desc') {
+                lbl.innerText = 'Latest ⬇';
+                btn.className = 'px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-600 text-white shadow-sm flex items-center gap-1';
+            } else {
+                lbl.innerText = 'Default';
+                btn.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-amber-100 flex items-center gap-1';
             }
         }
 
@@ -648,6 +734,7 @@
         }
 
         function renderAll() {
+            renderDynamicTabsAndSections();
             renderScheduleTable();
             renderFoodTable();
             renderRoomsTable();
@@ -657,6 +744,7 @@
             renderContactsTable();
             renderDayOverview();
             updateKPIs();
+            applyActiveTabVisibility();
         }
 
         function renderCurrentTab() {
@@ -668,6 +756,7 @@
             else if (activeTab === 'shopping') renderShoppingTable();
             else if (activeTab === 'todo') renderTodoTable();
             else if (activeTab === 'contacts') renderContactsTable();
+            else if (activeTab.startsWith('custom_')) renderCustomSectionTable(activeTab);
         }
 
         function filterByDay(day) {
@@ -688,36 +777,135 @@
 
         function switchTab(tabId) {
             activeTab = tabId;
-            ['dayview', 'schedule', 'food', 'rooms', 'vehicles', 'shopping', 'todo', 'contacts'].forEach(t => {
-                const sec = document.getElementById('sec-' + t);
-                const tab = document.getElementById('tab-' + t);
-                if (sec) sec.classList.add('hidden');
-                if (tab) {
-                    tab.classList.remove('active', 'text-amber-600');
-                    tab.classList.add('text-slate-600', 'dark:text-slate-300');
+            applyActiveTabVisibility();
+        }
+
+        function applyActiveTabVisibility() {
+            const allTabIds = ['dayview', 'schedule', 'food', 'rooms', 'vehicles', 'shopping', 'todo', 'contacts', ...customSections.map(s => s.id)];
+
+            allTabIds.forEach(t => {
+                const secEl = document.getElementById('sec-' + t);
+                const tabEl = document.getElementById('tab-' + t);
+                if (secEl) {
+                    if (t === activeTab) secEl.classList.remove('hidden');
+                    else secEl.classList.add('hidden');
+                }
+                if (tabEl) {
+                    if (t === activeTab) {
+                        tabEl.classList.add('active', 'text-amber-600');
+                        tabEl.classList.remove('text-slate-600', 'dark:text-slate-300');
+                    } else {
+                        tabEl.classList.remove('active', 'text-amber-600');
+                        tabEl.classList.add('text-slate-600', 'dark:text-slate-300');
+                    }
                 }
             });
-            const activeSec = document.getElementById('sec-' + tabId);
-            const activeTabEl = document.getElementById('tab-' + tabId);
-            if (activeSec) activeSec.classList.remove('hidden');
-            if (activeTabEl) {
-                activeTabEl.classList.add('active', 'text-amber-600');
-                activeTabEl.classList.remove('text-slate-600', 'dark:text-slate-300');
-            }
+
             renderCurrentTab();
         }
 
-        // 1. EVENT AGENDA TABLE
+        // DYNAMIC CUSTOM TABS ENGINE FOR GUESTS (READ-ONLY)
+        function renderDynamicTabsAndSections() {
+            // 1. Render Tab Buttons
+            const btnContainer = document.getElementById('dynamicTabButtonsContainer');
+            if (btnContainer) {
+                btnContainer.innerHTML = customSections.map(sec => `
+                    <button onclick="switchTab('${sec.id}')" id="tab-${sec.id}" class="tab-btn px-2.5 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap transition">
+                        <i class="fa-solid fa-folder mr-1 text-amber-500"></i> ${sec.name}
+                    </button>
+                `).join('');
+            }
+
+            // 2. Render Sections
+            const secContainer = document.getElementById('dynamicSectionsContainer');
+            if (secContainer) {
+                secContainer.innerHTML = customSections.map(sec => `
+                    <section id="sec-${sec.id}" class="${sec.id === activeTab ? '' : 'hidden'} space-y-3">
+                        <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
+                            <div class="p-2.5 bg-amber-50/70 dark:bg-slate-800/90 border-b flex justify-between items-center">
+                                <h2 class="text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-folder-open text-amber-600"></i> ${sec.name}
+                                </h2>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900" id="count-${sec.id}">0 Items</span>
+                            </div>
+                            <div class="overflow-x-auto touch-scroll">
+                                <table class="w-full text-left text-xs min-w-[540px]">
+                                    <thead>
+                                        <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
+                                            <th class="p-2.5">Title / Item</th>
+                                            <th class="p-2.5">Category / Day</th>
+                                            <th class="p-2.5">Details / Time</th>
+                                            <th class="p-2.5">Location (Google Maps)</th>
+                                            <th class="p-2.5">In-Charge</th>
+                                            <th class="p-2.5 text-right">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-${sec.id}" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                `).join('');
+            }
+
+            customSections.forEach(sec => renderCustomSectionTable(sec.id));
+        }
+
+        function renderCustomSectionTable(secId) {
+            const tbody = document.getElementById(`tbody-${secId}`);
+            if (!tbody) return;
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+
+            let rows = customItemsData.filter(i => i.section === secId);
+
+            if (search) {
+                rows = rows.filter(i => (i.title && i.title.toLowerCase().includes(search)) ||
+                    (i.person && i.person.toLowerCase().includes(search)) ||
+                    (i.location && i.location.toLowerCase().includes(search)) ||
+                    (i.notes && i.notes.toLowerCase().includes(search)));
+            }
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
+            const countBadge = document.getElementById(`count-${secId}`);
+            if (countBadge) countBadge.innerText = `${rows.length} Items`;
+
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No items in this section.</td></tr>` :
+                rows.map(r => `
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-2.5">
+                            <span class="font-bold text-slate-800 dark:text-slate-100 block">${r.title}</span>
+                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5"><i class="fa-regular fa-note-sticky text-amber-500 mr-1 text-[8px]"></i>${r.notes}</span>` : ''}
+                        </td>
+                        <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-200 dark:bg-slate-700">${r.date || '—'}</span></td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${r.time || '—'}</td>
+                        <td class="p-2.5">${formatLocationLink(r.location)}</td>
+                        <td class="p-2.5 font-medium text-slate-700 dark:text-slate-300">${r.person || '—'}</td>
+                        <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        // 1. EVENT AGENDA TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
         function renderScheduleTable() {
             const tbody = document.getElementById('scheduleTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = scheduleData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
+
+            let rows = scheduleData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No events found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5 whitespace-nowrap"><span class="font-bold text-amber-600 block">${r.date}</span><span class="text-[10px] text-slate-400 block">${r.time}</span></td>
-                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
-                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
+                        <td class="p-2.5">
+                            <span class="font-semibold text-slate-800 dark:text-slate-100 block">${r.title}</span>
+                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5"><i class="fa-solid fa-note-sticky text-[8px] text-amber-500 mr-1"></i>${r.notes}</span>` : ''}
+                        </td>
+                        <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.transport}</td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
@@ -725,17 +913,25 @@
                 `).join('');
         }
 
-        // 2. FOOD TABLE
+        // 2. FOOD TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
         function renderFoodTable() {
             const tbody = document.getElementById('foodTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = foodData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
+
+            let rows = foodData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No meals found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5 whitespace-nowrap"><span class="font-extrabold text-amber-600 block">${r.mealType}</span><span class="text-[10px] text-slate-400 block">${r.time} • ${r.date}</span></td>
-                        <td class="p-2.5 font-bold">${r.caterer}<span class="text-[10px] text-slate-400 block">${r.place}</span></td>
-                        <td class="p-2.5"><div class="text-[11px] bg-amber-50 dark:bg-amber-950/40 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div></td>
+                        <td class="p-2.5 font-bold">${r.caterer}<span class="text-[10px] text-slate-400 block">${formatLocationLink(r.place)}</span></td>
+                        <td class="p-2.5">
+                            <div class="text-[11px] bg-amber-50 dark:bg-amber-950/40 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div>
+                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5">${r.notes}</span>` : ''}
+                        </td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300 font-semibold">${r.headcount}</td>
                         <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.contactPerson || r.bookedBy || '—'}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
@@ -743,16 +939,23 @@
                 `).join('');
         }
 
-        // 3. ROOMS TABLE (SEPARATE TAB)
+        // 3. ROOMS TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
         function renderRoomsTable() {
             const tbody = document.getElementById('roomsTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = roomsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
+            let rows = roomsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No rooms found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
-                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${r.name}</td>
-                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${r.location}</td>
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">
+                            ${r.name}
+                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block font-normal">${r.notes}</span>` : ''}
+                        </td>
+                        <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${highlightPhoneNumbers(r.details)}</td>
                         <td class="p-2.5 text-[11px] font-semibold text-amber-600">${r.timing}</td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.bookedBy}</td>
@@ -761,11 +964,15 @@
                 `).join('');
         }
 
-        // 4. VEHICLES TABLE (SEPARATE TAB)
+        // 4. VEHICLES TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
         function renderVehiclesTable() {
             const tbody = document.getElementById('vehiclesTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = vehiclesData.filter(i => !search || i.name.toLowerCase().includes(search) || i.model.toLowerCase().includes(search));
+            let rows = vehiclesData.filter(i => !search || i.name.toLowerCase().includes(search) || i.model.toLowerCase().includes(search));
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No vehicles found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
@@ -774,12 +981,12 @@
                             <div class="font-semibold">${r.contactPerson}</div>
                             <div class="text-[10px]">${highlightPhoneNumbers(r.phone)}</div>
                         </td>
+                        <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">${r.rate}</td>
                         <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">
                             <div>${r.timing}</div>
                             ${r.notes ? `<div class="text-[10px] text-amber-600 italic">${r.notes}</div>` : ''}
                         </td>
-                        <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.bookedBy}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
@@ -802,39 +1009,34 @@
                 `).join('');
         }
 
-        // 6. TO-DO TABLE
+        // 6. TO-DO TABLE (WITH TIME SORT + NOTES)
         function renderTodoTable() {
             const tbody = document.getElementById('todoTableBody');
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const rows = todoData.filter(i => (currentDayFilter === 'all' || (i.date && i.date.includes(currentDayFilter)) || (i.time && i.time.includes(currentDayFilter))) && (!search || i.title.toLowerCase().includes(search)));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="4" class="p-4 text-center text-slate-400">No tasks found.</td></tr>` :
+            let rows = todoData.filter(i => (currentDayFilter === 'all' || (i.date && i.date.includes(currentDayFilter)) || (i.time && i.time.includes(currentDayFilter))) && (!search || i.title.toLowerCase().includes(search)));
+
+            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No tasks found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
-                        <td class="p-2.5 text-[10px] text-slate-500 font-bold">${r.time || r.date}</td>
+                        <td class="p-2.5 text-[10px] text-slate-500 font-bold">${r.date || r.time}</td>
+                        <td class="p-2.5 text-[11px] text-slate-500 italic">${r.notes || '—'}</td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
-        // 7. MASTER CONTACT DIRECTORY (LIVE SYNCED)
+        // 7. MASTER CONTACT DIRECTORY (WITH GOOGLE MAPS + CALL)
         function renderContactsTable() {
             const tbody = document.getElementById('contactsTableBody');
             if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
 
-            const list = contactsData.length ? contactsData : [
-                { category: 'Hotel Manager', name: 'Sri Kaliswari Le Archids Manager', phone: '8098615353', location: 'Sivakasi', service: '3 Double Bedrooms Booking (Nov 19-21)' },
-                { category: 'Hotel Manager', name: 'JB Sri Ram Residency Manager', phone: '7305153210', location: 'Virudhunagar', service: 'Mini & Premium Suites Booking (Nov 20-21)' },
-                { category: 'Driver / Travels', name: 'Viji (Luxury Vacations)', phone: '8489489383', location: 'Sivakasi', service: 'Mahindra Marazzo (7 Seater) Driver' },
-                { category: 'Driver / Travels', name: 'Soundararajan K P (Sri Annai Travels)', phone: '9360188819', location: 'Virudhunagar', service: 'Force Urbania (14-Str) & Toyota Innova Booking' },
-                { category: 'Priest / Iyer', name: 'Iyer Kalidass', phone: '—', location: 'Pooja Hall', service: 'Ganapathy Homam & All Ceremonies (Adv: ₹500, Tot: ₹6000)' },
-                { category: 'Catering Lead', name: 'Appans Hotel Catering Team', phone: '—', location: 'Sivakasi', service: 'Breakfast (60 Pax), Lunch, Snacks, Dinner' },
-                { category: 'Coordinator Lead', name: 'Arunkumar', phone: '—', location: 'Family', service: 'Overall Bookings, Finances & Vendor Management' }
-            ];
-
-            const filtered = list.filter(c => !search || c.name.toLowerCase().includes(search) || c.category.toLowerCase().includes(search) || c.location.toLowerCase().includes(search) || c.phone.includes(search));
+            const filtered = contactsData.filter(c => !search || c.name.toLowerCase().includes(search) || c.category.toLowerCase().includes(search) || c.location.toLowerCase().includes(search) || c.phone.includes(search));
 
             const countEl = document.getElementById('contactDirectoryCount');
             if (countEl) countEl.innerText = `${filtered.length} Contacts`;
@@ -845,33 +1047,42 @@
                         <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded-lg ${c.category.includes('Hotel') ? 'bg-blue-100 text-blue-800' : c.category.includes('Driver') ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${c.category}</span></td>
                         <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${c.name}</td>
                         <td class="p-2.5 font-semibold text-emerald-600 text-xs">${highlightPhoneNumbers(c.phone)}</td>
-                        <td class="p-2.5 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot text-rose-500 mr-1 text-[10px]"></i>${c.location}</td>
-                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${c.service}</td>
+                        <td class="p-2.5">${formatLocationLink(c.location)}</td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">
+                            <div>${c.service}</div>
+                            ${c.notes ? `<div class="text-[10px] text-slate-400 italic">${c.notes}</div>` : ''}
+                        </td>
                     </tr>
                 `).join('');
         }
 
-        // 0. DAY-BY-DAY MASTER OVERVIEW (5 SEPARATED DEDICATED BLOCKS)
+        // 0. DAY-BY-DAY MASTER OVERVIEW (WITH TIME SORT + GOOGLE MAPS)
         function renderDayOverview() {
             const day = currentDayFilter;
             const filterFn = i => day === 'all' || (i.date && i.date.includes(day)) || (i.time && i.time.includes(day));
 
             // 1. Events
-            const dayS = scheduleData.filter(filterFn);
+            let dayS = scheduleData.filter(filterFn);
+            if (currentTimeSort === 'asc') dayS.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') dayS.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
             document.getElementById('dayviewScheduleCount').innerText = `${dayS.length} Events`;
             document.getElementById('dayviewScheduleContainer').innerHTML = dayS.length === 0 ? `<p class="text-xs text-slate-400 py-2">No events scheduled for this day.</p>` :
                 dayS.map(r => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.title}</span>
-                            <span class="text-[10px] text-amber-600 font-semibold">${r.time} • ${r.location}</span>
+                            <span class="text-[10px] text-amber-600 font-semibold block">${r.time} • ${formatLocationLink(r.location)}</span>
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
 
-            // 2. Food (Appans Hotel)
-            const dayF = foodData.filter(i => day === 'all' || (i.date && i.date.includes(day)));
+            // 2. Food
+            let dayF = foodData.filter(i => day === 'all' || (i.date && i.date.includes(day)));
+            if (currentTimeSort === 'asc') dayF.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') dayF.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
             document.getElementById('dayviewFoodCount').innerText = `${dayF.length} Meals`;
             document.getElementById('dayviewFoodContainer').innerHTML = dayF.length === 0 ? `<p class="text-xs text-slate-400 py-2">No meals logged for this day.</p>` :
                 dayF.map(r => {
@@ -887,24 +1098,32 @@
                     </div>
                 `}).join('');
 
-            // 3. Rooms & Lodging (SEPARATED!)
-            document.getElementById('dayviewRoomsCount').innerText = `${roomsData.length} Bookings`;
-            document.getElementById('dayviewRoomsContainer').innerHTML = roomsData.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rooms booked.</p>` :
-                roomsData.map(r => `
+            // 3. Rooms
+            let dayRm = [...roomsData];
+            if (currentTimeSort === 'asc') dayRm.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
+            else if (currentTimeSort === 'desc') dayRm.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+
+            document.getElementById('dayviewRoomsCount').innerText = `${dayRm.length} Bookings`;
+            document.getElementById('dayviewRoomsContainer').innerHTML = dayRm.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rooms booked.</p>` :
+                dayRm.map(r => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.name}</span>
-                            <span class="text-[10px] text-blue-600 font-semibold block">${highlightPhoneNumbers(r.phone)} • ${r.location}</span>
+                            <span class="text-[10px] text-blue-600 font-semibold block">${highlightPhoneNumbers(r.phone)} • ${formatLocationLink(r.location)}</span>
                             <span class="text-[9px] text-slate-400 block">${r.timing}</span>
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
 
-            // 4. Vehicles & Drivers (SEPARATED!)
-            document.getElementById('dayviewVehiclesCount').innerText = `${vehiclesData.length} Vehicles`;
-            document.getElementById('dayviewVehiclesContainer').innerHTML = vehiclesData.length === 0 ? `<p class="text-xs text-slate-400 py-2">No vehicles booked.</p>` :
-                vehiclesData.map(v => `
+            // 4. Vehicles
+            let dayVh = [...vehiclesData];
+            if (currentTimeSort === 'asc') dayVh.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
+            else if (currentTimeSort === 'desc') dayVh.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+
+            document.getElementById('dayviewVehiclesCount').innerText = `${dayVh.length} Vehicles`;
+            document.getElementById('dayviewVehiclesContainer').innerHTML = dayVh.length === 0 ? `<p class="text-xs text-slate-400 py-2">No vehicles booked.</p>` :
+                dayVh.map(v => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${v.name}</span>
@@ -915,8 +1134,11 @@
                     </div>
                 `).join('');
 
-            // 5. To-Do Tasks
-            const dayT = todoData.filter(filterFn);
+            // 5. To-Do
+            let dayT = todoData.filter(filterFn);
+            if (currentTimeSort === 'asc') dayT.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+            else if (currentTimeSort === 'desc') dayT.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+
             document.getElementById('dayviewTodoCount').innerText = `${dayT.length} Tasks`;
             document.getElementById('dayviewTodoContainer').innerHTML = dayT.length === 0 ? `<p class="text-xs text-slate-400 py-2">No to-dos for this day.</p>` :
                 dayT.map(r => `
