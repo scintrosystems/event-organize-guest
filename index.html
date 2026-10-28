@@ -145,7 +145,7 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs & Toolbar (With Custom Tabs Container & Time Sorting) -->
+        <!-- Navigation Tabs & Common Filter Toolbar -->
         <div class="glass-card p-2.5 sm:p-3 rounded-xl border space-y-2.5 shadow-sm">
             <div
                 class="flex space-x-1 sm:space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200 dark:border-slate-700">
@@ -182,7 +182,7 @@
                     <i class="fa-solid fa-address-book mr-1 text-emerald-600"></i> Contact List
                 </button>
 
-                <!-- DYNAMIC CUSTOM TABS CONTAINER (AUTO-SYNCED FROM ADMIN) -->
+                <!-- DYNAMIC CUSTOM TABS CONTAINER -->
                 <div id="dynamicTabButtonsContainer" class="flex space-x-1 sm:space-x-1.5"></div>
             </div>
 
@@ -213,7 +213,7 @@
                         21</button>
                 </div>
 
-                <!-- Time-wise sorting button for guests -->
+                <!-- Time-wise sorting button -->
                 <div class="flex items-center gap-1 shrink-0 ml-auto">
                     <span class="text-[11px] font-bold text-slate-500 mr-1">Time:</span>
                     <button onclick="toggleTimeSort()" id="btnTimeSort"
@@ -460,7 +460,7 @@
             </div>
         </section>
 
-        <!-- 7. MASTER CONTACT DIRECTORY TAB (READ-ONLY, ONE-TAP CALL) -->
+        <!-- 7. MASTER CONTACT DIRECTORY TAB (READ-ONLY) -->
         <section id="sec-contacts" class="hidden space-y-3">
             <div class="glass-card rounded-xl border overflow-hidden shadow-sm">
                 <div class="p-2.5 bg-emerald-50 dark:bg-slate-800/90 border-b flex justify-between items-center">
@@ -491,12 +491,12 @@
             </div>
         </section>
 
-        <!-- DYNAMIC CUSTOM SECTIONS CONTAINER (FOR ANY CUSTOM TABS CREATED IN ADMIN) -->
+        <!-- DYNAMIC CUSTOM SECTIONS CONTAINER -->
         <div id="dynamicSectionsContainer"></div>
 
     </main>
 
-    <!-- Self-Contained Guest Showcase Script (Dynamic Live Fetch) -->
+    <!-- Self-Contained Guest Showcase Script -->
     <script>
         const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbw4PnVn44BmMAFUrZ34fVPAlKUYLKk2ztD6jCvFYxKjYgH5sVSio0fVYeGa-SFJAYrB/exec";
 
@@ -516,7 +516,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchLiveGuestData();
-            setInterval(fetchLiveGuestData, 30000); // 30s auto background sync
+            setInterval(fetchLiveGuestData, 30000);
         });
 
         async function fetchLiveGuestData() {
@@ -542,7 +542,7 @@
                         } else if (sec.startsWith('custom_')) {
                             custItems.push({
                                 id, section: sec, title: r[4] || '', date: r[2] || '', time: r[3] || '',
-                                location: r[5] || '', transport: r[6] || '', person: r[7] || '', status: r[8] || 'Confirmed', notes: r[11] || r[9] || ''
+                                location: r[5] || '', transport: r[6] || '', person: r[7] || '', status: r[8] || 'Confirmed', notes: r[11] || ''
                             });
                         } else if (sec === 'food') {
                             fd.push({
@@ -553,23 +553,23 @@
                         } else if (sec === 'rooms' || (sec === 'logistics' && String(r[2]).includes('Room'))) {
                             rm.push({
                                 id, name: r[4] || 'Hotel', location: r[5] || 'Sivakasi', phone: extractPhone(r[3]),
-                                details: r[3] || '', timing: r[6] || '', bookedBy: r[7] || 'Arunkumar', status: r[8] || 'Confirmed', notes: r[9] || ''
+                                details: r[3] || '', timing: r[6] || '', date: cleanDate(r[2]) || 'Nov 19', bookedBy: r[7] || 'Arunkumar', status: r[8] || 'Confirmed', notes: r[11] || ''
                             });
                         } else if (sec === 'vehicles' || (sec === 'logistics' && String(r[2]).includes('Vehicle'))) {
                             vh.push({
                                 id, name: r[4] || 'Travels', model: r[4], contactPerson: r[7] || '', phone: extractPhone(r[3]),
-                                location: r[5] || '', rate: r[3] || '', timing: r[6] || '', bookedBy: 'Arunkumar',
-                                status: r[8] || 'Confirmed', notes: r[9] || ''
+                                location: r[5] || '', rate: r[3] || '', timing: r[6] || '', date: cleanDate(r[2]) || 'Nov 20', bookedBy: 'Arunkumar',
+                                status: r[8] || 'Confirmed', notes: r[11] || ''
                             });
                         } else if (sec === 'contacts') {
                             ct.push({
                                 id, category: r[2] || 'Coordinator', service: r[3] || '',
-                                name: r[4] || '', location: r[5] || '', phone: r[7] || '—', notes: r[9] || ''
+                                name: r[4] || '', location: r[5] || '', phone: r[7] || '—', notes: r[11] || ''
                             });
                         } else {
                             const item = {
                                 id, section: sec, date: cleanDate(r[2]) || r[2], category: r[2],
-                                time: cleanTime(r[3]) || r[3], details: r[3], notes: r[9] || r[3] || '',
+                                time: cleanTime(r[3]) || r[3], details: r[3], notes: r[11] || '',
                                 title: r[4], name: r[4], location: r[5], transport: r[6],
                                 person: r[7], status: r[8] || 'Confirmed'
                             };
@@ -596,6 +596,32 @@
             }
         }
 
+        // =========================================================================
+        // ✅ PROMINENT, LARGE EXTRA NOTES CALLOUT BADGE (EASY TO READ FOR ALL GUESTS)
+        // =========================================================================
+        function renderExtraNotesBadge(notes, theme = 'amber') {
+            if (!notes) return '';
+
+            const themeClasses = {
+                amber: 'bg-amber-100/95 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 border-amber-300 dark:border-amber-700',
+                blue: 'bg-blue-100/95 dark:bg-blue-950/80 text-blue-950 dark:text-blue-200 border-blue-300 dark:border-blue-700',
+                emerald: 'bg-emerald-100/95 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700',
+                indigo: 'bg-indigo-100/95 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-200 border-indigo-300 dark:border-indigo-700',
+                slate: 'bg-slate-100/95 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700'
+            };
+            const cls = themeClasses[theme] || themeClasses.amber;
+
+            return `
+                <div class="text-[13.5px] sm:text-[14.5px] font-semibold ${cls} p-2 sm:p-2.5 rounded-xl border mt-1.5 flex items-start gap-2 shadow-xs leading-snug">
+                    <i class="fa-solid fa-note-sticky text-amber-600 dark:text-amber-400 text-base mt-0.5 shrink-0"></i>
+                    <div>
+                        <span class="font-extrabold uppercase text-[10.5px] tracking-wider block text-amber-700 dark:text-amber-300">Note:</span>
+                        <span>${notes}</span>
+                    </div>
+                </div>
+            `;
+        }
+
         // GOOGLE MAPS LINK HELPER
         function formatLocationLink(loc) {
             if (!loc || loc === '—') return '—';
@@ -607,7 +633,52 @@
             </a>`;
         }
 
-        // TIME PARSER FOR ACCURATE CHRONOLOGICAL SORTING
+        // SMART DAY MATCHING HELPER
+        function matchesDay(item, targetDay) {
+            if (!targetDay || targetDay === 'all') return true;
+
+            const dayNum = targetDay.replace(/\D/g, '');
+            if (!dayNum) return true;
+
+            const pool = `${item.date || ''} ${item.timing || ''} ${item.time || ''} ${item.title || ''} ${item.details || ''} ${item.notes || ''}`.toLowerCase();
+
+            if (pool.includes(`nov ${dayNum}`) ||
+                pool.includes(`${dayNum}-nov`) ||
+                pool.includes(`${dayNum} nov`) ||
+                pool.includes(`nov${dayNum}`)) {
+                return true;
+            }
+
+            if (pool.includes('19-nov') && pool.includes('21-nov')) {
+                const num = parseInt(dayNum, 10);
+                if (num >= 19 && num <= 21) return true;
+            }
+            if (pool.includes('20-nov') && pool.includes('21-nov')) {
+                const num = parseInt(dayNum, 10);
+                if (num >= 20 && num <= 21) return true;
+            }
+            if (pool.includes('18-nov') && pool.includes('22-nov')) {
+                const num = parseInt(dayNum, 10);
+                if (num >= 18 && num <= 22) return true;
+            }
+
+            return false;
+        }
+
+        function parseDateToScore(dateStr, timeStr) {
+            const full = `${dateStr || ''} ${timeStr || ''}`.toLowerCase();
+            let dayNum = 99;
+
+            if (full.includes('nov 18') || full.includes('18-nov') || full.includes('18')) dayNum = 18;
+            else if (full.includes('nov 19') || full.includes('19-nov') || full.includes('19')) dayNum = 19;
+            else if (full.includes('nov 20') || full.includes('20-nov') || full.includes('20')) dayNum = 20;
+            else if (full.includes('nov 21') || full.includes('21-nov') || full.includes('21')) dayNum = 21;
+            else if (full.includes('nov 22') || full.includes('22-nov') || full.includes('22')) dayNum = 22;
+
+            const timeMins = parseTimeToMinutes(timeStr || dateStr);
+            return (dayNum * 10000) + timeMins;
+        }
+
         function parseTimeToMinutes(timeStr) {
             if (!timeStr) return 9999;
             const s = String(timeStr).trim();
@@ -629,6 +700,15 @@
             if (ampm === 'AM' && hours === 12) hours = 0;
 
             return hours * 60 + minutes;
+        }
+
+        function sortItemsChronologically(items) {
+            return [...items].sort((a, b) => {
+                const scoreA = parseDateToScore(a.date || a.timing || a.time, a.time || a.timing);
+                const scoreB = parseDateToScore(b.date || b.timing || b.time, b.time || b.timing);
+                if (currentTimeSort === 'desc') return scoreB - scoreA;
+                return scoreA - scoreB;
+            });
         }
 
         function toggleTimeSort() {
@@ -784,19 +864,19 @@
             const allTabIds = ['dayview', 'schedule', 'food', 'rooms', 'vehicles', 'shopping', 'todo', 'contacts', ...customSections.map(s => s.id)];
 
             allTabIds.forEach(t => {
-                const secEl = document.getElementById('sec-' + t);
-                const tabEl = document.getElementById('tab-' + t);
-                if (secEl) {
-                    if (t === activeTab) secEl.classList.remove('hidden');
-                    else secEl.classList.add('hidden');
+                const sec = document.getElementById('sec-' + t);
+                const tab = document.getElementById('tab-' + t);
+                if (sec) {
+                    if (t === activeTab) sec.classList.remove('hidden');
+                    else sec.classList.add('hidden');
                 }
-                if (tabEl) {
+                if (tab) {
                     if (t === activeTab) {
-                        tabEl.classList.add('active', 'text-amber-600');
-                        tabEl.classList.remove('text-slate-600', 'dark:text-slate-300');
+                        tab.classList.add('active', 'text-amber-600');
+                        tab.classList.remove('text-slate-600', 'dark:text-slate-300');
                     } else {
-                        tabEl.classList.remove('active', 'text-amber-600');
-                        tabEl.classList.add('text-slate-600', 'dark:text-slate-300');
+                        tab.classList.remove('active', 'text-amber-600');
+                        tab.classList.add('text-slate-600', 'dark:text-slate-300');
                     }
                 }
             });
@@ -804,9 +884,8 @@
             renderCurrentTab();
         }
 
-        // DYNAMIC CUSTOM TABS ENGINE FOR GUESTS (READ-ONLY)
+        // DYNAMIC CUSTOM TABS ENGINE FOR GUESTS
         function renderDynamicTabsAndSections() {
-            // 1. Render Tab Buttons
             const btnContainer = document.getElementById('dynamicTabButtonsContainer');
             if (btnContainer) {
                 btnContainer.innerHTML = customSections.map(sec => `
@@ -816,7 +895,6 @@
                 `).join('');
             }
 
-            // 2. Render Sections
             const secContainer = document.getElementById('dynamicSectionsContainer');
             if (secContainer) {
                 secContainer.innerHTML = customSections.map(sec => `
@@ -833,7 +911,7 @@
                                     <thead>
                                         <tr class="bg-slate-100 text-slate-500 uppercase text-[10px] tracking-wider border-b">
                                             <th class="p-2.5">Title / Item</th>
-                                            <th class="p-2.5">Category / Day</th>
+                                            <th class="p-2.5">Event Day</th>
                                             <th class="p-2.5">Details / Time</th>
                                             <th class="p-2.5">Location (Google Maps)</th>
                                             <th class="p-2.5">In-Charge</th>
@@ -856,7 +934,7 @@
             if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
 
-            let rows = customItemsData.filter(i => i.section === secId);
+            let rows = customItemsData.filter(i => i.section === secId && matchesDay(i, currentDayFilter));
 
             if (search) {
                 rows = rows.filter(i => (i.title && i.title.toLowerCase().includes(search)) ||
@@ -865,8 +943,7 @@
                     (i.notes && i.notes.toLowerCase().includes(search)));
             }
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            rows = sortItemsChronologically(rows);
 
             const countBadge = document.getElementById(`count-${secId}`);
             if (countBadge) countBadge.innerText = `${rows.length} Items`;
@@ -876,7 +953,7 @@
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5">
                             <span class="font-bold text-slate-800 dark:text-slate-100 block">${r.title}</span>
-                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5"><i class="fa-regular fa-note-sticky text-amber-500 mr-1 text-[8px]"></i>${r.notes}</span>` : ''}
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </td>
                         <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-200 dark:bg-slate-700">${r.date || '—'}</span></td>
                         <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${r.time || '—'}</td>
@@ -887,15 +964,16 @@
                 `).join('');
         }
 
-        // 1. EVENT AGENDA TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
+        // 1. EVENT AGENDA TABLE (ENLARGED NOTES CALLOUT)
         function renderScheduleTable() {
             const tbody = document.getElementById('scheduleTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
 
-            let rows = scheduleData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
+            let rows = scheduleData.filter(i => matchesDay(i, currentDayFilter) &&
+                (!search || i.title.toLowerCase().includes(search) || i.person.toLowerCase().includes(search)));
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            rows = sortItemsChronologically(rows);
 
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No events found.</td></tr>` :
                 rows.map(r => `
@@ -903,7 +981,7 @@
                         <td class="p-2.5 whitespace-nowrap"><span class="font-bold text-amber-600 block">${r.date}</span><span class="text-[10px] text-slate-400 block">${r.time}</span></td>
                         <td class="p-2.5">
                             <span class="font-semibold text-slate-800 dark:text-slate-100 block">${r.title}</span>
-                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5"><i class="fa-solid fa-note-sticky text-[8px] text-amber-500 mr-1"></i>${r.notes}</span>` : ''}
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </td>
                         <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.transport}</td>
@@ -913,15 +991,16 @@
                 `).join('');
         }
 
-        // 2. FOOD TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
+        // 2. FOOD TABLE (ENLARGED NOTES CALLOUT)
         function renderFoodTable() {
             const tbody = document.getElementById('foodTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
 
-            let rows = foodData.filter(i => (currentDayFilter === 'all' || i.date.includes(currentDayFilter)) && (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
+            let rows = foodData.filter(i => matchesDay(i, currentDayFilter) &&
+                (!search || i.mealType.toLowerCase().includes(search) || (i.menu && i.menu.toLowerCase().includes(search))));
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            rows = sortItemsChronologically(rows);
 
             tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No meals found.</td></tr>` :
                 rows.map(r => `
@@ -930,7 +1009,7 @@
                         <td class="p-2.5 font-bold">${r.caterer}<span class="text-[10px] text-slate-400 block">${formatLocationLink(r.place)}</span></td>
                         <td class="p-2.5">
                             <div class="text-[11px] bg-amber-50 dark:bg-amber-950/40 p-1.5 rounded-lg border leading-tight">${(r.menu || 'Menu TBD').replace(/\n/g, '<br>')}</div>
-                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block mt-0.5">${r.notes}</span>` : ''}
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300 font-semibold">${r.headcount}</td>
                         <td class="p-2.5 text-slate-600 dark:text-slate-300">${r.contactPerson || r.bookedBy || '—'}</td>
@@ -939,21 +1018,23 @@
                 `).join('');
         }
 
-        // 3. ROOMS TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
+        // 3. ROOMS TABLE (ENLARGED NOTES CALLOUT)
         function renderRoomsTable() {
             const tbody = document.getElementById('roomsTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            let rows = roomsData.filter(i => !search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search));
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+            let rows = roomsData.filter(i => matchesDay(i, currentDayFilter) &&
+                (!search || i.name.toLowerCase().includes(search) || i.details.toLowerCase().includes(search)));
 
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No rooms found.</td></tr>` :
+            rows = sortItemsChronologically(rows);
+
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No rooms found for this day.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">
                             ${r.name}
-                            ${r.notes ? `<span class="text-[10px] text-slate-500 italic block font-normal">${r.notes}</span>` : ''}
+                            ${renderExtraNotesBadge(r.notes, 'blue')}
                         </td>
                         <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${highlightPhoneNumbers(r.details)}</td>
@@ -964,44 +1045,51 @@
                 `).join('');
         }
 
-        // 4. VEHICLES TABLE (WITH GOOGLE MAPS + TIME SORT + NOTES)
+        // 4. VEHICLES TABLE (ENLARGED NOTES CALLOUT)
         function renderVehiclesTable() {
             const tbody = document.getElementById('vehiclesTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            let rows = vehiclesData.filter(i => !search || i.name.toLowerCase().includes(search) || i.model.toLowerCase().includes(search));
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+            let rows = vehiclesData.filter(i => matchesDay(i, currentDayFilter) &&
+                (!search || i.name.toLowerCase().includes(search) || i.model.toLowerCase().includes(search)));
 
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No vehicles found.</td></tr>` :
+            rows = sortItemsChronologically(rows);
+
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-slate-400">No vehicles found for this day.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
-                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${r.name}<span class="text-[10px] text-slate-400 block">${r.model}</span></td>
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">
+                            ${r.name}<span class="text-[10px] text-slate-400 block">${r.model}</span>
+                            ${renderExtraNotesBadge(r.notes, 'emerald')}
+                        </td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">
                             <div class="font-semibold">${r.contactPerson}</div>
                             <div class="text-[10px]">${highlightPhoneNumbers(r.phone)}</div>
                         </td>
                         <td class="p-2.5">${formatLocationLink(r.location)}</td>
                         <td class="p-2.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">${r.rate}</td>
-                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">
-                            <div>${r.timing}</div>
-                            ${r.notes ? `<div class="text-[10px] text-amber-600 italic">${r.notes}</div>` : ''}
-                        </td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${r.timing}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
                     </tr>
                 `).join('');
         }
 
-        // 5. POOJA LIST TABLE
+        // 5. POOJA LIST TABLE (ENLARGED NOTES CALLOUT)
         function renderShoppingTable() {
             const tbody = document.getElementById('shoppingTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
             const rows = shoppingData.filter(i => !search || i.title.toLowerCase().includes(search));
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No items found.</td></tr>` :
+
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No pooja items found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-indigo-100 text-indigo-700">${r.category}</span></td>
-                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
+                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                            ${r.title}
+                            ${renderExtraNotesBadge(r.notes, 'indigo')}
+                        </td>
                         <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${r.notes || '—'}</td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
                         <td class="p-2.5 text-right">${getReadOnlyStatus(r.status)}</td>
@@ -1009,19 +1097,22 @@
                 `).join('');
         }
 
-        // 6. TO-DO TABLE (WITH TIME SORT + NOTES)
+        // 6. TO-DO TABLE (ENLARGED NOTES CALLOUT)
         function renderTodoTable() {
             const tbody = document.getElementById('todoTableBody');
+            if (!tbody) return;
             const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            let rows = todoData.filter(i => (currentDayFilter === 'all' || (i.date && i.date.includes(currentDayFilter)) || (i.time && i.time.includes(currentDayFilter))) && (!search || i.title.toLowerCase().includes(search)));
 
-            if (currentTimeSort === 'asc') rows.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') rows.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            let rows = todoData.filter(i => matchesDay(i, currentDayFilter) && (!search || i.title.toLowerCase().includes(search)));
+            rows = sortItemsChronologically(rows);
 
-            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No tasks found.</td></tr>` :
+            tbody.innerHTML = rows.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-400">No to-do tasks found.</td></tr>` :
                 rows.map(r => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
-                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">${r.title}</td>
+                        <td class="p-2.5 font-semibold text-slate-800 dark:text-slate-100">
+                            ${r.title}
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
+                        </td>
                         <td class="p-2.5 text-[10px] text-slate-500 font-bold">${r.date || r.time}</td>
                         <td class="p-2.5 text-[11px] text-slate-500 italic">${r.notes || '—'}</td>
                         <td class="p-2.5 text-slate-700 dark:text-slate-300">${r.person}</td>
@@ -1030,7 +1121,7 @@
                 `).join('');
         }
 
-        // 7. MASTER CONTACT DIRECTORY (WITH GOOGLE MAPS + CALL)
+        // 7. MASTER CONTACT DIRECTORY (ENLARGED NOTES CALLOUT)
         function renderContactsTable() {
             const tbody = document.getElementById('contactsTableBody');
             if (!tbody) return;
@@ -1045,26 +1136,22 @@
                 filtered.map(c => `
                     <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
                         <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded-lg ${c.category.includes('Hotel') ? 'bg-blue-100 text-blue-800' : c.category.includes('Driver') ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${c.category}</span></td>
-                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">${c.name}</td>
+                        <td class="p-2.5 font-bold text-slate-800 dark:text-slate-100">
+                            ${c.name}
+                            ${renderExtraNotesBadge(c.notes, 'emerald')}
+                        </td>
                         <td class="p-2.5 font-semibold text-emerald-600 text-xs">${highlightPhoneNumbers(c.phone)}</td>
                         <td class="p-2.5">${formatLocationLink(c.location)}</td>
-                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">
-                            <div>${c.service}</div>
-                            ${c.notes ? `<div class="text-[10px] text-slate-400 italic">${c.notes}</div>` : ''}
-                        </td>
+                        <td class="p-2.5 text-[11px] text-slate-600 dark:text-slate-300">${c.service}</td>
                     </tr>
                 `).join('');
         }
 
-        // 0. DAY-BY-DAY MASTER OVERVIEW (WITH TIME SORT + GOOGLE MAPS)
+        // 0. DAY-BY-DAY MASTER OVERVIEW (ENLARGED NOTES CALLOUT)
         function renderDayOverview() {
-            const day = currentDayFilter;
-            const filterFn = i => day === 'all' || (i.date && i.date.includes(day)) || (i.time && i.time.includes(day));
-
             // 1. Events
-            let dayS = scheduleData.filter(filterFn);
-            if (currentTimeSort === 'asc') dayS.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') dayS.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            let dayS = scheduleData.filter(i => matchesDay(i, currentDayFilter));
+            dayS = sortItemsChronologically(dayS);
 
             document.getElementById('dayviewScheduleCount').innerText = `${dayS.length} Events`;
             document.getElementById('dayviewScheduleContainer').innerHTML = dayS.length === 0 ? `<p class="text-xs text-slate-400 py-2">No events scheduled for this day.</p>` :
@@ -1073,15 +1160,15 @@
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.title}</span>
                             <span class="text-[10px] text-amber-600 font-semibold block">${r.time} • ${formatLocationLink(r.location)}</span>
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
 
             // 2. Food
-            let dayF = foodData.filter(i => day === 'all' || (i.date && i.date.includes(day)));
-            if (currentTimeSort === 'asc') dayF.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') dayF.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            let dayF = foodData.filter(i => matchesDay(i, currentDayFilter));
+            dayF = sortItemsChronologically(dayF);
 
             document.getElementById('dayviewFoodCount').innerText = `${dayF.length} Meals`;
             document.getElementById('dayviewFoodContainer').innerHTML = dayF.length === 0 ? `<p class="text-xs text-slate-400 py-2">No meals logged for this day.</p>` :
@@ -1093,51 +1180,51 @@
                             <span class="text-xs font-bold text-amber-600 block">${mealDisplay}</span>
                             <span class="text-[10px] text-slate-700 dark:text-slate-300 font-medium block">${r.menu || 'Menu TBD'}</span>
                             <span class="text-[9px] text-slate-400">${r.caterer} • ${r.headcount}</span>
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `}).join('');
 
             // 3. Rooms
-            let dayRm = [...roomsData];
-            if (currentTimeSort === 'asc') dayRm.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
-            else if (currentTimeSort === 'desc') dayRm.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+            let dayRm = roomsData.filter(i => matchesDay(i, currentDayFilter));
+            dayRm = sortItemsChronologically(dayRm);
 
             document.getElementById('dayviewRoomsCount').innerText = `${dayRm.length} Bookings`;
-            document.getElementById('dayviewRoomsContainer').innerHTML = dayRm.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rooms booked.</p>` :
+            document.getElementById('dayviewRoomsContainer').innerHTML = dayRm.length === 0 ? `<p class="text-xs text-slate-400 py-2">No rooms booked for this day.</p>` :
                 dayRm.map(r => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${r.name}</span>
                             <span class="text-[10px] text-blue-600 font-semibold block">${highlightPhoneNumbers(r.phone)} • ${formatLocationLink(r.location)}</span>
                             <span class="text-[9px] text-slate-400 block">${r.timing}</span>
+                            ${renderExtraNotesBadge(r.notes, 'blue')}
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
                 `).join('');
 
             // 4. Vehicles
-            let dayVh = [...vehiclesData];
-            if (currentTimeSort === 'asc') dayVh.sort((a, b) => parseTimeToMinutes(a.timing) - parseTimeToMinutes(b.timing));
-            else if (currentTimeSort === 'desc') dayVh.sort((a, b) => parseTimeToMinutes(b.timing) - parseTimeToMinutes(a.timing));
+            let dayVh = vehiclesData.filter(i => matchesDay(i, currentDayFilter));
+            dayVh = sortItemsChronologically(dayVh);
 
             document.getElementById('dayviewVehiclesCount').innerText = `${dayVh.length} Vehicles`;
-            document.getElementById('dayviewVehiclesContainer').innerHTML = dayVh.length === 0 ? `<p class="text-xs text-slate-400 py-2">No vehicles booked.</p>` :
+            document.getElementById('dayviewVehiclesContainer').innerHTML = dayVh.length === 0 ? `<p class="text-xs text-slate-400 py-2">No vehicles booked for this day.</p>` :
                 dayVh.map(v => `
                     <div class="py-1.5 flex items-start justify-between gap-1">
                         <div>
                             <span class="text-xs font-bold text-slate-800 dark:text-slate-100 block">${v.name}</span>
                             <span class="text-[10px] text-emerald-600 font-semibold block">${highlightPhoneNumbers(v.phone)} • ${v.rate}</span>
                             <span class="text-[9px] text-slate-400 block">${v.timing}</span>
+                            ${renderExtraNotesBadge(v.notes, 'emerald')}
                         </div>
                         <div>${getReadOnlyStatus(v.status)}</div>
                     </div>
                 `).join('');
 
             // 5. To-Do
-            let dayT = todoData.filter(filterFn);
-            if (currentTimeSort === 'asc') dayT.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
-            else if (currentTimeSort === 'desc') dayT.sort((a, b) => parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time));
+            let dayT = todoData.filter(i => matchesDay(i, currentDayFilter));
+            dayT = sortItemsChronologically(dayT);
 
             document.getElementById('dayviewTodoCount').innerText = `${dayT.length} Tasks`;
             document.getElementById('dayviewTodoContainer').innerHTML = dayT.length === 0 ? `<p class="text-xs text-slate-400 py-2">No to-dos for this day.</p>` :
@@ -1146,6 +1233,7 @@
                         <div>
                             <span class="text-xs font-semibold text-slate-800 dark:text-slate-100 block">${r.title}</span>
                             <span class="text-[10px] text-slate-500">${r.time || r.date} • ${r.person}</span>
+                            ${renderExtraNotesBadge(r.notes, 'amber')}
                         </div>
                         <div>${getReadOnlyStatus(r.status)}</div>
                     </div>
